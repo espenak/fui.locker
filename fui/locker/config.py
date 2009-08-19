@@ -15,5 +15,5 @@ PROMOTIONS_PORTLET_COLUMN = u"plone.rightcolumn"
 # easier to find permissions in the Security tab in the ZMI.
 
 ADD_PERMISSIONS = {
-	"Locker Register" : "Fui Locker: Add Locker Register",
+	"Locker Registry" : "Fui Locker: Add Locker Registry",
 }

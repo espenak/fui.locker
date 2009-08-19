@@ -1,4 +1,4 @@
-"""Definition of the LockerRegister content type and associated schemata and
+"""Definition of the LockerRegistry content type and associated schemata and
 other logic.
 
 This file contains a number of comments explaining the various lines of
@@ -22,7 +22,7 @@ from Products.Archetypes.interfaces import IObjectInitializedEvent
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
-from fui.locker.interfaces import ILockerRegister
+from fui.locker.interfaces import ILockerRegistry
 
 from fui.locker.config import PROJECTNAME
 from fui.locker.config import PROMOTIONS_PORTLET_COLUMN
@@ -31,7 +31,7 @@ from fui.locker import LockerMessageFactory as _
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
-LockerRegisterSchema = folder.ATFolderSchema.copy() + atapi.Schema((
+LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 	atapi.TextField('text',
 		required=False,
 		searchable=True,
@@ -49,18 +49,18 @@ LockerRegisterSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 # below), use AnnotationStorage. Without this, our property will conflict
 # with the attribute with the same name that is being managed by the default
 # attributestorage
-LockerRegisterSchema['title'].storage = atapi.AnnotationStorage()
+LockerRegistrySchema['title'].storage = atapi.AnnotationStorage()
 
 # Calling this re-orders a few fields to comply with Plone conventions.
-finalizeATCTSchema(LockerRegisterSchema, folderish=True, moveDiscussion=False)
+finalizeATCTSchema(LockerRegistrySchema, folderish=True, moveDiscussion=False)
 
-class LockerRegister(folder.ATFolder):
+class LockerRegistry(folder.ATFolder):
 	""" Contains multiple locker reservations. """
-	implements(ILockerRegister)
+	implements(ILockerRegistry)
 	
 	# The portal type name must be set here, matching the one in types.xml
 	# in the GenericSetup profile
-	portal_type = "Locker Register"
+	portal_type = "Locker Registry"
 	
 	# This enables Archetypes' standard title-to-id renaming machinery
 	# If you need different semantics, it's possible to override the method
@@ -68,7 +68,7 @@ class LockerRegister(folder.ATFolder):
 	_at_rename_after_creation = True
 	
 	# We then associate the schema with our content type
-	schema = LockerRegisterSchema
+	schema = LockerRegistrySchema
 	
 	# Our interface specifies that we should use simple Python properties
 	# for various fields. To simplify creating these, we can map them to 
@@ -85,4 +85,4 @@ class LockerRegister(folder.ATFolder):
 
 	
 # This line tells Archetypes about the content type
-atapi.registerType(LockerRegister, PROJECTNAME)
+atapi.registerType(LockerRegistry, PROJECTNAME)

@@ -4,7 +4,7 @@
     i18n_domain="fui.locker">
 
     <!-- Declare security for the field properties of the various content
-         types, and register other components, such as validation subscription
+         types, and registry other components, such as validation subscription
          adapters, event subscribers (for adding a portlet to a newly created
          cinema folder), and adapter factories.
         
@@ -12,14 +12,14 @@
 
     <!-- Cinema folders: -->
     
-    <class class=".lockerregister.LockerRegister">
+    <class class=".lockerregistry.LockerRegistry">
         <require
             permission="zope2.View"
-            interface="..interfaces.ILockerRegister"
+            interface="..interfaces.ILockerRegistry"
             />
         <require
             permission="cmf.ModifyPortalContent"
-            set_schema="..interfaces.ILockerRegister"
+            set_schema="..interfaces.ILockerRegistry"
             />
     </class>
     

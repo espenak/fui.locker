@@ -21,20 +21,20 @@
     -->
 
     <browser:resource
-        name="fui-lockerregister.css"
-        file="lockerregister.css"
+        name="fui-lockerregistry.css"
+        file="lockerregistry.css"
         />
 
     <browser:page
-        for="..interfaces.ILockerRegister"
+        for="..interfaces.ILockerRegistry"
         name="view"
-        class=".lockerregister.LockerRegisterView"
+        class=".lockerregistry.LockerRegistryView"
         permission="zope2.View"
 		/>
 
 	<!--
 	<browser:page 
-		for="..interfaces.ILockerRegister" 
+		for="..interfaces.ILockerRegistry" 
 		name="view"
 		class=".enquiry.EnquiryForm"
 		permission="zope2.View"
@@ -42,11 +42,11 @@
 	-->
         
     <browser:menuItem
-        for="..interfaces.ILockerRegister"
+        for="..interfaces.ILockerRegistry"
         menu="plone_displayviews"
-        title="Locker Register view"
+        title="Locker Registry view"
         action="@@view"
-        description="Default representation of a locker register"
+        description="Default representation of a locker registry"
         />
 
         

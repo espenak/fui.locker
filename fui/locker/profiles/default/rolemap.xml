@@ -8,7 +8,7 @@
          folders are considered to be so "structural" that only administrators
          can add them.
       -->
-    <permission name="Fui Locker: Add Locker Register" acquire="False">
+    <permission name="Fui Locker: Add Locker Registry" acquire="False">
         <role name="Manager" />
     </permission>
   </permissions>

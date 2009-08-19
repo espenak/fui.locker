@@ -33,10 +33,10 @@
 
         <div tal:condition="text" metal:use-macro="python:context.widget('text', mode='view')" />
         
-        <tal:areas condition="view/have_locker_registers">
-            <h2 i18n:translate="title_registerfolder_subareas">Areas</h2>
+        <tal:areas condition="view/have_locker_registries">
+            <h2 i18n:translate="title_registryfolder_subareas">Areas</h2>
             <dl>
-                <tal:block repeat="area view/locker_registers">
+                <tal:block repeat="area view/locker_registries">
                     <dt>
                         <a tal:attributes="href area/url"
                            tal:content="area/title" />
@@ -46,18 +46,18 @@
             </dl>
         </tal:areas>
         
-        <tal:registers condition="view/have_registers">
-            <h2 i18n:translate="title_registerfolder_subareas">Cinemas</h2>
+        <tal:registries condition="view/have_registries">
+            <h2 i18n:translate="title_registryfolder_subareas">Cinemas</h2>
             <dl>
-                <tal:block repeat="register view/registers">
+                <tal:block repeat="registry view/registries">
                     <dt>
-                        <a tal:attributes="href register/url"
-                           tal:content="register/title" />
+                        <a tal:attributes="href registry/url"
+                           tal:content="registry/title" />
                     </dt>
-                    <dd tal:content="register/address" />
+                    <dd tal:content="registry/address" />
                 </tal:block>
             </dl>
-        </tal:registers>
+        </tal:registries>
 
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">
             show related items if they exist
