@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="fui.locker">
+
+    <!-- Declare security for the field properties of the various content
+         types, and register other components, such as validation subscription
+         adapters, event subscribers (for adding a portlet to a newly created
+         cinema folder), and adapter factories.
+        
+      -->
+
+    <!-- Cinema folders: -->
+    
+    <class class=".lockerregister.LockerRegister">
+        <require
+            permission="zope2.View"
+            interface="..interfaces.ILockerRegister"
+            />
+        <require
+            permission="cmf.ModifyPortalContent"
+            set_schema="..interfaces.ILockerRegister"
+            />
+    </class>
+    
+</configure>

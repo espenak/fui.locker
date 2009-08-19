@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+.*.swp
+*~
+fui.locker.egg-info/
+dist/
+.DS_Store
