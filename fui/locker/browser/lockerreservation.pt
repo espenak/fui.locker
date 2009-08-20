@@ -6,25 +6,16 @@
 		<div metal:fill-slot="main"
 			 tal:define="priority here/getPriority;
 						 priority_color python:(priority == 'high' and 'red') or (priority == 'low' and 'green') or ''" >
-
-			<h1 tal:content="context/Title" 
-				tal:attributes="style string:color:$priority_color" >
-				Title
-			</h1>
-
-				<p tal:content="structure here/getBody" />          
-
-			<div class="documentByLine">
-				  Message by <span tal:content="context/Creator" /> 
-				  with <strong tal:content="priority" /> priority.
-				  -
-				  <span tal:replace="python:here.toLocalizedTime(context.CreationDate(),long_format=1)" />
-			</div>
-		</div>
 		-->
 
-		<h1>Hello world!</h1>
-		Hei du der!
+		<div metal:fill-slot="main">
+			<h1>Username</h1>
+			<span tal:content="context/Title" />
+
+			<h1>Locker id</h1>
+			<span tal:content="context/lockerid" />
+		</div>
+
 	</body>
 
 </html>

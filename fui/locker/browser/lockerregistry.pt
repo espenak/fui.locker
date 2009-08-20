@@ -1,72 +1,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      lang="en"
-      metal:use-macro="context/main_template/macros/master"
-      i18n:domain="fui.locker">
-<body>
+	  xmlns:tal="http://xml.zope.org/namespaces/tal"
+	  xmlns:metal="http://xml.zope.org/namespaces/metal"
+	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	  lang="en"
+	  metal:use-macro="context/main_template/macros/master"
+	  i18n:domain="fui.locker">
 
-<metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-           tal:define="text context/text;">
+	<body>
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
+		<metal:main fill-slot="main">
+			<tal:main-macro metal:define-macro="main"
+					 tal:define="text context/text;">
 
-        <h1 class="documentFirstHeading">
-            <span metal:use-macro="python:context.widget('title', mode='view')" />
-        </h1>
+				<div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
+				<h1 class="documentFirstHeading">
+					<span metal:use-macro="python:context.widget('title', mode='view')" />
+				</h1>
 
-        <div class="documentDescription">
-            <span metal:use-macro="python:context.widget('description', mode='view')" />
-        </div>
+				<div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <div tal:replace="structure provider:plone.abovecontentbody" />
+				<div class="documentDescription">
+					<span metal:use-macro="python:context.widget('description', mode='view')" />
+				</div>
 
-        <p tal:condition="python: not text and is_editable"
-           i18n:translate="no_body_text"
-           class="discreet">
-            This item does not have any body text, click the edit tab to change it.
-        </p>
+				<div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <div tal:condition="text" metal:use-macro="python:context.widget('text', mode='view')" />
-        
-        <tal:areas condition="view/have_locker_registries">
-            <h2 i18n:translate="title_registryfolder_subareas">Areas</h2>
-            <dl>
-                <tal:block repeat="area view/locker_registries">
-                    <dt>
-                        <a tal:attributes="href area/url"
-                           tal:content="area/title" />
-                    </dt>
-                    <dd tal:content="area/description" />
-                </tal:block>
-            </dl>
-        </tal:areas>
-        
-        <tal:registries condition="view/have_registries">
-            <h2 i18n:translate="title_registryfolder_subareas">Cinemas</h2>
-            <dl>
-                <tal:block repeat="registry view/registries">
-                    <dt>
-                        <a tal:attributes="href registry/url"
-                           tal:content="registry/title" />
-                    </dt>
-                    <dd tal:content="registry/address" />
-                </tal:block>
-            </dl>
-        </tal:registries>
+				<p tal:condition="python: not text and is_editable"
+					 i18n:translate="no_body_text"
+					 class="discreet">
+				</p>
 
-        <div metal:use-macro="context/document_relateditems/macros/relatedItems">
-            show related items if they exist
-        </div>
-    
-        <div tal:replace="structure provider:plone.belowcontentbody" />
+				<div tal:condition="text" metal:use-macro="python:context.widget('text', mode='view')" />
 
-    </tal:main-macro>
-</metal:main>
 
-</body>
+				<tal:areas condition="view/have_locker_reservations">
+					<ul>
+						<tal:block repeat="res view/locker_reservations">
+							<li>
+								<a tal:attributes="href res/url" tal:content="res/title"/>
+								(<span tal:content="res/lockerid"/>)
+							</li>
+						</tal:block>
+					</ul>
+				</tal:areas>
+
+
+				<div metal:use-macro="context/document_relateditems/macros/relatedItems">
+					show related items if they exist
+				</div>
+			
+				<div tal:replace="structure provider:plone.belowcontentbody" />
+
+			</tal:main-macro>
+		</metal:main>
+
+	</body>
 </html>

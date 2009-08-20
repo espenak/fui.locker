@@ -60,7 +60,7 @@ class LockerRegistry(folder.ATFolder):
 	
 	# The portal type name must be set here, matching the one in types.xml
 	# in the GenericSetup profile
-	portal_type = "Locker Registry"
+	portal_type = "LockerRegistry"
 	
 	# This enables Archetypes' standard title-to-id renaming machinery
 	# If you need different semantics, it's possible to override the method

@@ -17,30 +17,32 @@ from fui.locker import LockerMessageFactory as _
 # Schema definition
 # http://api.plone.org/Archetypes/1.5.0/public/frames/products/Archetypes/index.html
 # http://api.plone.org/Archetypes/1.5.0/public/frames/products/Archetypes/products.Archetypes.Widget-module.html
+# http://plone.org/products/archetypes/documentation/old/arch_widget_quickref_1_3_1/
 schema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-
-	atapi.TextField('username',
-			required = True,
-			searchable = True,
-			storage = atapi.AnnotationStorage(),
-			widget = atapi.StringWidget(label = _(u'UiO username')),
-		),
-
-	atapi.TextField('locker_id',
-			required = True,
-			searchable = True,
-			storage = atapi.AnnotationStorage(),
-			description = _(u"The unique number or combination of letters " +
-				 "identifying the locker."),
-			widget = atapi.StringWidget(label = _(u'Locker Id')),
+	atapi.StringField("lockerid",
+		required = True,
+		searchable = True,
+		widget = atapi.StringWidget(
+			label = _(u'Locker Id'),
+			description = _(u"The unique number or combination of " +
+					"letters identifying the locker.")),
 		),
 ))
 
+# Just reuse the 'title' field for the username
+schema['title'].storage = atapi.AnnotationStorage()
+schema['title'].widget.label = _(u'Username')
+schema['title'].widget.description = _(u"Your UiO username.")
+
+# Remove the "description" inherited from ATContentTypeSchema
+del schema["description"]
+
 
 class LockerReservation(base.ATCTContent):
-    """An Archetype for a LockerReservation, """
-    implements(ILockerReservation)
-    schema = schema
-    
+	"""An Archetype for a LockerReservation, """
+	implements(ILockerReservation)
+	schema = schema
+
+
 # Content type registration for the Archetypes machinery
 atapi.registerType(LockerReservation, config.PROJECTNAME)

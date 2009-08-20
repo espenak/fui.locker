@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<object name="InstantMessage"
+<object name="LockerReservation"
 		meta_type="Factory-based Type Information with dynamic views"
 		i18n:domain="fui.locker" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
@@ -14,13 +14,13 @@
 	<property name="global_allow">True</property>
 	<property name="filter_content_types">False</property>
 	<property name="allow_discussion">False</property>
-	<property name="default_view">@@view</property>
+	<property name="default_view">view</property>
 	<property name="view_methods">
-		<element value="@@view" />
+		<element value="view" />
 	</property>
-	<alias from="(Default)" to="@@view" />
-	<alias from="edit" to="atct_edit" />
-	<alias from="sharing" to="@@sharing" />
+	<alias from="(Default)" to="(dynamic view)"/>
+	<alias from="edit" to="atct_edit"/>
+	<alias from="sharing" to="@@sharing"/>
 	<alias from="view" to="(selected layout)"/>
 	<action title="View" action_id="view" category="object" condition_expr=""
 		url_expr="string:${object_url}/" visible="True">

@@ -22,10 +22,3 @@ class ILockerRegistry(Interface):
 
 class ILockerReservation(Interface):
 	""" A reserved locker in a locker registry.	"""
-
-	#username = schema.ASCIILine(title=_(u"Your UiO username"), required = True)
-
-	#locker_id = schema.ASCIILine(title=_(u"Locker Id"),
-	#		description=_(u"The unique number or combination of letters " +
-	#			"identifying the locker."),
-	#		required=True)
