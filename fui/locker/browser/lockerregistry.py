@@ -1,8 +1,3 @@
-"""Define a browser view for the LockerRegistry content type. In the FTI 
-configured in profiles/default/types/*.xml, this is being set as the default
-view of that content type.
-"""
-
 from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -14,8 +9,7 @@ from fui.locker.interfaces import ILockerRegistry
 from plone.memoize.instance import memoize 
 
 class LockerRegistryView(BrowserView):
-	"""Default view of a registry folder
-	"""
+	""" Default view of a registry folder """
 	
 	# This template will be used to render the view. An implicit variable
 	# 'view' will be available in this template, referring to an instance
@@ -66,4 +60,3 @@ class LockerRegistryView(BrowserView):
 		# metadata for these fields (with a catalog.xml GenericSetup file).
 
 		return []
-

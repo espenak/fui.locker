@@ -11,4 +11,7 @@
 	<factorytypes>
 		<type portal_type="Locker Registry"/>
 	</factorytypes>
+	<factorytypes>
+		<type portal_type="LockerReservation"/>
+	</factorytypes>
 </object>
