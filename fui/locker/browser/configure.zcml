@@ -1,45 +1,45 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="fui.locker">
+		xmlns="http://namespaces.zope.org/zope"
+		xmlns:browser="http://namespaces.zope.org/browser"
+		i18n_domain="fui.locker">
 
-    <include package="plone.app.contentmenu" />
+	<include package="plone.app.contentmenu" />
 
-    <browser:resource
-        name="fui-lockerregistry.css"
-        file="lockerregistry.css"
-        />
-
-    <browser:page
-        for="..interfaces.ILockerRegistry"
-        name="view"
-        class=".lockerregistry.LockerRegistryView"
-        permission="zope2.View"
-		/>
-
-    <browser:page
-        for="..interfaces.ILockerReservation"
-        name="view"
-        template="lockerreservation.pt"
-        permission="zope2.View"
-        />
+	<browser:resource
+			name="fui-lockerregistry.css"
+			file="lockerregistry.css"
+			/>
 
 	<!--
+	<browser:page
+			for="..interfaces.ILockerRegistry"
+			name="view"
+			class=".lockerregistry.LockerRegistryView"
+			permission="zope2.View"
+			/>
+		-->
+
 	<browser:page 
-		for="..interfaces.ILockerRegistry" 
+		for="..interfaces.ILockerRegistry"
 		name="view"
 		class=".enquiry.EnquiryForm"
 		permission="zope2.View"
 		/> 
-	-->
-        
-    <browser:menuItem
-        for="..interfaces.ILockerRegistry"
-        menu="plone_displayviews"
-        title="Locker Registry view"
-        action="@@view"
-        description="Default representation of a locker registry"
-        />
 
-        
+	<browser:page
+			for="..interfaces.ILockerReservation"
+			name="view"
+			template="lockerreservation.pt"
+			permission="zope2.View"
+			/>
+
+			
+	<browser:menuItem
+			for="..interfaces.ILockerRegistry"
+			menu="plone_displayviews"
+			title="Locker Registry view"
+			action="@@view"
+			description="Default representation of a locker registry"
+			/>
+
 </configure>
