@@ -31,22 +31,13 @@ Enquiry from: %(name)s <%(email_address)s>
 """ 
 
 class IEnquiryForm(Interface): 
-	"""Define the fields of our form 
-	""" 
-	subject = schema.TextLine(title=_(u"Subject"), 
-		  required=True) 
-	name = schema.TextLine(title=_(u"Your name"), 
-		  required=True) 
-	
-	email_address = schema.ASCIILine(title=_(u"Your email address"), 
-	description=_(u"We will use this to contact you if you request it"), 
-		  required=True, 
-		  constraint=validate_email) 
-	
-	message = schema.Text(title=_(u"Message"), 
-		  description=_(u"Please keep to 1,000 characters"), 
-		  required=True, 
-		  max_length=1000) 
+	username = schema.TextLine(
+			title = _(u"Your name"),
+			required = True)
+	lockerid = schema.TextLine(
+			title = _(u"Locker id"),
+			description = _(u"The id/number of the locker."),
+			required = True)
 
 
 class EnquiryForm(formbase.PageForm): 
@@ -60,13 +51,13 @@ class EnquiryForm(formbase.PageForm):
 
 	@form.action(_(u"Send")) 
 	def action_send(self, action, data): 
-		"""
-		Send the email to the site administrator and redirect to the 
-		front page, showing a status message to say the message  
-		was received. 
-		""" 
 		context = aq_inner(self.context)
+		print "###################################################"
+		print dir(context)
+		print "###################################################"
+		context.invokeFactory(
+				type_name = "LockerReservation",
+				id = "test")
 		urltool = getToolByName(context, 'portal_url')
 		self.request.response.redirect(urltool.getPortalObject().absolute_url()) 
 		return '' 
-

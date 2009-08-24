@@ -27,6 +27,24 @@ schema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 			description = _(u"The unique number or combination of " +
 					"letters identifying the locker.")),
 		),
+
+	atapi.StringField("confirmkey",
+		required = True,
+		searchable = True,
+		widget = atapi.StringWidget(
+			label = _(u'Confirmation key'),
+			description = _(u"The key required to confirm this "+
+				"locker reservation by email.")),
+		),
+
+	atapi.BooleanField("confirmed",
+		required = True,
+		searchable = True,
+		widget = atapi.StringWidget(
+			label = _(u'Confirmation key'),
+			description = _(u"Have this reservation.been confirmed "+
+				"by email?")),
+		),
 ))
 
 # Just reuse the 'title' field for the username
@@ -41,7 +59,9 @@ del schema["description"]
 class LockerReservation(base.ATCTContent):
 	"""An Archetype for a LockerReservation, """
 	implements(ILockerReservation)
-	schema = schema
+	#schema = schema
+	username = atapi.ATFieldProperty("username")
+	lockerid = atapi.ATFieldProperty("lockerid")
 
 
 # Content type registration for the Archetypes machinery
