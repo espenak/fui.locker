@@ -40,8 +40,8 @@ schema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 	atapi.BooleanField("confirmed",
 		required = True,
 		searchable = True,
-		widget = atapi.StringWidget(
-			label = _(u'Confirmation key'),
+		widget = atapi.BooleanWidget(
+			label = _(u'Confirmed by email?'),
 			description = _(u"Have this reservation.been confirmed "+
 				"by email?")),
 		),
@@ -59,9 +59,7 @@ del schema["description"]
 class LockerReservation(base.ATCTContent):
 	"""An Archetype for a LockerReservation, """
 	implements(ILockerReservation)
-	#schema = schema
-	username = atapi.ATFieldProperty("username")
-	lockerid = atapi.ATFieldProperty("lockerid")
+	schema = schema
 
 
 # Content type registration for the Archetypes machinery

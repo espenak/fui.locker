@@ -23,7 +23,7 @@
 		for="..interfaces.ILockerRegistry"
 		name="view"
 		class=".enquiry.EnquiryForm"
-		permission="zope2.View"
+		permission="zope2.Public"
 		/>
 
 	<browser:page

@@ -83,6 +83,6 @@ class LockerRegistry(folder.ATFolder):
 	description = atapi.ATFieldProperty('description')
 	text = atapi.ATFieldProperty('text')
 
-	
+
 # This line tells Archetypes about the content type
 atapi.registerType(LockerRegistry, PROJECTNAME)

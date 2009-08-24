@@ -1,4 +1,6 @@
 import re 
+from random import randint
+
 from zope.interface import Interface 
 from zope import schema 
 from zope.formlib import form 
@@ -9,30 +11,20 @@ from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage 
 from Acquisition import aq_inner 
 from Products.CMFCore.utils import getToolByName 
+from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
+
 from fui.locker import LockerMessageFactory as _ 
 
 
-# Define a validation method for email addresses 
-class NotAnEmailAddress(schema.ValidationError): 
-	__doc__ = _(u"Invalid email address") 
-
-check_email = re.compile( 
-			r"[a-zA-Z0-9._%-]+@([a-zA-Z0-9-]+\.)*[a-zA-Z]{2,4}").match 
 
 
-def validate_email(value): 
-	if not check_email(value): 
-		raise NotAnEmailAddress(value) 
-	return True
 
-MESSAGE_TEMPLATE = """\ 
-Enquiry from: %(name)s <%(email_address)s> 
-%(message)s 
-""" 
-
-class IEnquiryForm(Interface): 
+class IForm(Interface):
+	""" A reserved locker in a locker registry.	"""
 	username = schema.TextLine(
-			title = _(u"Your name"),
+			title = _(u"UiO username"),
+			description = _(u"Your UiO username. A confirmation email " +
+				"is sent to your UiO mail."),
 			required = True)
 	lockerid = schema.TextLine(
 			title = _(u"Locker id"),
@@ -41,9 +33,7 @@ class IEnquiryForm(Interface):
 
 
 class EnquiryForm(formbase.PageForm): 
-	form_fields = form.FormFields(IEnquiryForm) 
-	label = _(u"Make an enquiry") 
-	description = _(u"Got a question or comment? Please submit it using the form below!")
+	form_fields = form.FormFields(IForm)
 
 	# This trick hides the editable border and tabs in Plone 
 	def __call__(self): 
@@ -52,12 +42,26 @@ class EnquiryForm(formbase.PageForm):
 	@form.action(_(u"Send")) 
 	def action_send(self, action, data): 
 		context = aq_inner(self.context)
-		print "###################################################"
-		print dir(context)
-		print "###################################################"
+
+		# Elevate rights to allow anonymous users to add to the db
+		user = context.getWrappedOwner()
+		newSecurityManager(None, user)
+
+		# Create a new LockerReservation
+		id = data["username"]
 		context.invokeFactory(
 				type_name = "LockerReservation",
-				id = "test")
+				id = id)
+		r = context[id]
+		r.setLockerid(data["lockerid"])
+		r.setTitle(id)
+		r.setConfirmkey(str(randint(50, 1000000000)))
+		r.setConfirmed(False)
+
+		# Clear elevated rights
+		noSecurityManager()
+
+		# Redirect to frontpage
 		urltool = getToolByName(context, 'portal_url')
 		self.request.response.redirect(urltool.getPortalObject().absolute_url()) 
-		return '' 
+		return ''

@@ -22,10 +22,3 @@ class ILockerRegistry(Interface):
 
 class ILockerReservation(Interface):
 	""" A reserved locker in a locker registry.	"""
-	username = schema.TextLine(
-			title = _(u"Your name"),
-			required = True)
-	lockerid = schema.TextLine(
-			title = _(u"Locker id"),
-			description = _(u"The id/number of the locker."),
-			required = True)
