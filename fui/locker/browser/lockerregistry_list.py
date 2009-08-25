@@ -8,10 +8,10 @@ from fui.locker.interfaces import ILockerRegistry, ILockerReservation
 
 from plone.memoize.instance import memoize 
 
-class LockerRegistryView(BrowserView):
+class LockerRegistryList(BrowserView):
 	""" Default view of a registry folder """
 	
-	__call__ = ViewPageTemplateFile('lockerregistry.pt')
+	__call__ = ViewPageTemplateFile('lockerregistry_list.pt')
 	
 	
 	def have_locker_reservations(self):

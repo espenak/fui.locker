@@ -14,14 +14,14 @@
 	<property name="global_allow">True</property>
 	<property name="filter_content_types">False</property>
 	<property name="allow_discussion">False</property>
-	<property name="default_view">view</property>
+	<property name="default_view">lockerreservation_view</property>
 	<property name="view_methods">
-		<element value="view" />
+		<element value="lockerreservation_view" />
 	</property>
 	<alias from="(Default)" to="(dynamic view)"/>
 	<alias from="edit" to="atct_edit"/>
 	<alias from="sharing" to="@@sharing"/>
-	<alias from="view" to="(selected layout)"/>
+	<alias from="lockerreservation_view" to="(selected layout)"/>
 	<action title="View" action_id="view" category="object" condition_expr=""
 		url_expr="string:${object_url}/" visible="True">
 		<permission value="View" />

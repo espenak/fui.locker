@@ -14,52 +14,48 @@ from fui.locker import config
 from fui.locker.interfaces import ILockerReservation
 from fui.locker import LockerMessageFactory as _
 
+
+
+USERNAME_TITLE = u"UiO username"
+USERNAME_DESCRIPTION = u"Must be a valid UiO username."
+LOCKERID_TITLE = u"Locker id"
+LOCKERID_DESCRIPTION = u"The id/number of the locker."
+
+
 # Schema definition
 # http://api.plone.org/Archetypes/1.5.0/public/frames/products/Archetypes/index.html
 # http://api.plone.org/Archetypes/1.5.0/public/frames/products/Archetypes/products.Archetypes.Widget-module.html
 # http://plone.org/products/archetypes/documentation/old/arch_widget_quickref_1_3_1/
 schema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
-	atapi.StringField("lockerid",
+	atapi.IntegerField("lockerid",
 		required = True,
 		searchable = True,
-		widget = atapi.StringWidget(
-			label = _(u'Locker Id'),
-			description = _(u"The unique number or combination of " +
-					"letters identifying the locker.")),
-		),
-
-	atapi.StringField("confirmkey",
-		required = True,
-		searchable = True,
-		widget = atapi.StringWidget(
-			label = _(u'Confirmation key'),
-			description = _(u"The key required to confirm this "+
-				"locker reservation by email.")),
-		),
-
-	atapi.BooleanField("confirmed",
-		required = True,
-		searchable = True,
-		widget = atapi.BooleanWidget(
-			label = _(u'Confirmed by email?'),
-			description = _(u"Have this reservation.been confirmed "+
-				"by email?")),
+		widget = atapi.IntegerWidget(
+			label = LOCKERID_TITLE,
+			description = LOCKERID_DESCRIPTION),
 		),
 ))
 
 # Just reuse the 'title' field for the username
 schema['title'].storage = atapi.AnnotationStorage()
-schema['title'].widget.label = _(u'Username')
-schema['title'].widget.description = _(u"Your UiO username.")
+schema['title'].widget.label = USERNAME_TITLE
+schema['title'].widget.description = USERNAME_DESCRIPTION
 
 # Remove the "description" inherited from ATContentTypeSchema
 del schema["description"]
+
 
 
 class LockerReservation(base.ATCTContent):
 	"""An Archetype for a LockerReservation, """
 	implements(ILockerReservation)
 	schema = schema
+
+
+	#def validate_lockerid(self, value):
+	#	if value < 1000 or value > 3999:
+	#		return "Crap!"
+	#	return None
 
 
 # Content type registration for the Archetypes machinery

@@ -1,0 +1,18 @@
+<html metal:use-macro="context/@@standard_macros/view">
+<head>
+</head>
+<body>
+	<div metal:fill-slot="body">
+		<h1>Locker reservation</h1>
+
+		<p>We have successfully registered you with this data:</p>
+		<blockquote>
+			Username: <span tal:replace="view/username"/><br/>
+			Locker id: <span tal:replace="view/lockerid"/>
+		</blockquote>
+
+		<p>The selected locker is only available to master students. If you are not
+		a master student, please visit the FUI office for manual registration.</p>
+	</div>
+</body>
+</html>

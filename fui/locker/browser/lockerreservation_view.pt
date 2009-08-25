@@ -1,21 +1,12 @@
 <html metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone" >
-
 	<body>
-		<!--
-		<div metal:fill-slot="main"
-			 tal:define="priority here/getPriority;
-						 priority_color python:(priority == 'high' and 'red') or (priority == 'low' and 'green') or ''" >
-		-->
-
 		<div metal:fill-slot="main">
-			<h1>Username</h1>
+			<h1>UiO username</h1>
 			<span tal:content="context/Title" />
 
 			<h1>Locker id</h1>
 			<span tal:content="context/lockerid" />
 		</div>
-
 	</body>
-
 </html>

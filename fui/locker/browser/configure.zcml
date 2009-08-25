@@ -10,36 +10,24 @@
 			file="lockerregistry.css"
 			/>
 
-	<!--
 	<browser:page
-			for="..interfaces.ILockerRegistry"
-			name="view"
-			class=".lockerregistry.LockerRegistryView"
-			permission="zope2.Public"
-			/>
-		-->
+		for="..interfaces.ILockerRegistry"
+		name="lockerregistry_list"
+		class=".lockerregistry_list.LockerRegistryList"
+		permission="zope2.View"
+		/>
 
 	<browser:page 
 		for="..interfaces.ILockerRegistry"
-		name="view"
-		class=".enquiry.EnquiryForm"
+		name="lockerregistry_form"
+		class=".lockerreservation_form.LockerReservationForm"
 		permission="zope2.Public"
 		/>
 
 	<browser:page
-			for="..interfaces.ILockerReservation"
-			name="view"
-			template="lockerreservation.pt"
-			permission="zope2.Public"
-			/>
-
-			
-	<browser:menuItem
-			for="..interfaces.ILockerRegistry"
-			menu="plone_displayviews"
-			title="Locker Registry view"
-			action="@@view"
-			description="Default representation of a locker registry"
-			/>
-
+		for="..interfaces.ILockerReservation"
+		name="lockerreservation_view"
+		template="lockerreservation_view.pt"
+		permission="zope2.Public"
+		/>
 </configure>

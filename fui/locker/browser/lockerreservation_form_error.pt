@@ -1,0 +1,22 @@
+<html metal:use-macro="context/@@standard_macros/view">
+<head>
+</head>
+<body>
+	<div metal:fill-slot="body">
+		<div class="error">
+			<h1>Error</h1>
+			
+			<p><span tal:replace="view/errormsg"/></p>
+			
+			<p>
+				<a href="" title="Try again"
+						tal:attributes="href python: context.absolute_url()">
+					Try again</a>
+			</p>
+		</div>
+	</div>
+
+
+
+</body>
+</html>

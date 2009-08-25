@@ -8,16 +8,16 @@ from fui.locker import LockerMessageFactory as _
 
 class ILockerRegistry(Interface):
 	""" A locker registry """
-	contains()
+	#contains()
 
-	title = schema.TextLine(title = _(u"Title"), required = True)
+	#title = schema.TextLine(title = _(u"Title"), required = True)
 
-	description = schema.TextLine(title = _(u"Description"),
-			description = _(u"A short summary of this locker registry."))
+	#description = schema.TextLine(title = _(u"Description"),
+	#		description = _(u"A short summary of this locker registry."))
 
-	text = schema.SourceText(title = _(u"Information"),
-			description = _(u"Optional information about this locker registry."),
-			required = False)
+	#text = schema.SourceText(title = _(u"Information"),
+	#		description = _(u"Optional information about this locker registry."),
+	#		required = False)
 
 
 class ILockerReservation(Interface):
