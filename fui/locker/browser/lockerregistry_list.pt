@@ -12,7 +12,6 @@
 				<span metal:use-macro="python:context.widget('title', mode='view')" />
 			</h1>
 
-			<tal:areas condition="view/have_locker_reservations">
 				<ul>
 					<tal:block repeat="res view/locker_reservations">
 						<li>
@@ -21,7 +20,6 @@
 						</li>
 					</tal:block>
 				</ul>
-			</tal:areas>
 		</metal:main>
 	</body>
 </html>

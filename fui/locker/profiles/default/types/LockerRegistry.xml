@@ -48,7 +48,6 @@
 	-->
 	<property name="default_view">lockerregistry_form</property>
 	<property name="view_methods">
-		<element value="lockerregistry_list"/>
 		<element value="lockerregistry_form"/>
 		<element value="folder_summary_view"/>
 		<element value="folder_tabular_view"/>
@@ -78,7 +77,7 @@
 
 	<action title="List" action_id="list" category="object" condition_expr=""
 			url_expr="string:${folder_url}/list" visible="True">
-		<permission value="View"/>
+		<permission value="Modify portal content"/>
 	</action>
 
 	<action title="Edit" action_id="edit" category="object" condition_expr=""

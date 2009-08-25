@@ -13,10 +13,6 @@ class LockerRegistryList(BrowserView):
 	
 	__call__ = ViewPageTemplateFile('lockerregistry_list.pt')
 	
-	
-	def have_locker_reservations(self):
-		return len(self.locker_reservations()) > 0
-	
 	# The memoize decorator means that the function will be executed only
 	# once (for a given set of arguments, but in this case there are no
 	# arguments). On subsequent calls, the return value is looked up from a
