@@ -2,7 +2,7 @@ import re, subprocess
 
 from zope.interface import Interface 
 from zope import schema 
-from zope.formlib import form 
+from zope.formlib import form
 from Products.Five.formlib import formbase 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile 
 from Products.CMFCore.interfaces import IURLTool 
@@ -48,8 +48,9 @@ class ILockerReservationForm(Interface):
 
 
 
-class LockerReservationForm(formbase.PageForm):
+class LockerReservationForm(form.AddForm):
 	form_fields = form.FormFields(ILockerReservationForm)
+	template = ViewPageTemplateFile("lockerreservation_form.pt")
 	result_template = ViewPageTemplateFile('lockerreservation_form_result.pt')
 	error_template = ViewPageTemplateFile('lockerreservation_form_error.pt')
 
@@ -62,7 +63,7 @@ class LockerReservationForm(formbase.PageForm):
 		context = aq_inner(self.context)
 
 		# Get input data
-		username = data["username"]
+		username = dadexterityta["username"]
 		lockerid = data["lockerid"]
 
 		# Validate
