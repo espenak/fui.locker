@@ -26,9 +26,6 @@
 				<div tal:condition="text"
 					metal:use-macro="python:context.widget('text', mode='view')" />
 
-
-				<p>To register a locker, we require your <em>UiO username</em> and a
-				<em>locker number</em>. we currently have these lockers available.</p>
       </metal:block>
     </div>
   </div>

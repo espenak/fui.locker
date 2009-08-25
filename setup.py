@@ -1,13 +1,12 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0'
+version = '1.0.1'
 
 setup(name='fui.locker',
 	version=version,
 	description="",
-	long_description=open("README.txt").read() + "\n" +
-	  			   open(os.path.join("docs", "HISTORY.txt")).read(),
+	long_description=open("README.rst").read(),
 	# Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
 	classifiers=[
 	  "Framework :: Plone",
@@ -17,7 +16,7 @@ setup(name='fui.locker',
 	keywords='',
 	author='Espen A. Kristiansen',
 	author_email='post@espenak.net',
-	url='http://svn.plone.org/svn/plone/plone.example',
+	url='http://github.com/espenak/fui.locker',
 	license='GPL',
 	packages=find_packages(exclude=['ez_setup']),
 	namespace_packages=['fui'],
@@ -37,4 +36,4 @@ setup(name='fui.locker',
 	paster_plugins.txt = setuptools.command.egg_info:write_arg
 	""",
 	paster_plugins = ["ZopeSkel"],
-	)
+)
