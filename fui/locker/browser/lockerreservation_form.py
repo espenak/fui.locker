@@ -70,7 +70,7 @@ class LockerReservationForm(form.AddForm):
 		lockerid = data["lockerid"]
 
 		# Validate
-		masterlockers = context.getMasterlockers()
+		masterlockers = context.getParsedMasterlockers()
 		try:
 			lockerreservation.validate_lockerid(context, masterlockers, lockerid)
 			lockerreservation.validate_unique_username(context, username)

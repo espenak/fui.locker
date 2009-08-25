@@ -13,6 +13,9 @@
 					<dd><span tal:replace="view/errormsg"/></dd>
 				</dl>
 
+
+				<!--<p tal:content="python:dir(context)"/>-->
+
 				<!-- Standard header and stuff just like an article -->
 				<h1 class="documentFirstHeading">
 					<span metal:use-macro="python:context.widget('title', mode='view')" />

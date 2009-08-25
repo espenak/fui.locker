@@ -85,6 +85,39 @@ LockerRegistrySchema['title'].storage = atapi.AnnotationStorage()
 # Calling this re-orders a few fields to comply with Plone conventions.
 finalizeATCTSchema(LockerRegistrySchema, folderish=True, moveDiscussion=False)
 
+
+
+
+
+class Lockerrange(object):
+	def __init__(self, start, end):
+		self.start = start
+		self.end = end
+
+	def __contains__(self, number):
+		return number >= self.start and number <= self.end
+
+	def __str__(self):
+		return "%s-%s" % (self.start, self.end)
+
+
+class Lockerlist(object):
+	def __init__(self, lockerlist):
+		self.ranges = []
+		for r in lockerlist:
+			start, end = r.split("-")
+			self.ranges.append(Lockerrange(int(start), int(end)))
+	
+	def __contains__(self, number):
+		for r in self.ranges:
+			if number in r:
+				return True
+		return False
+
+	def __iter__(self):
+		return self.ranges.__iter__()
+
+
 class LockerRegistry(folder.ATFolder):
 	""" Contains multiple locker reservations. """
 	implements(ILockerRegistry)
@@ -110,7 +143,16 @@ class LockerRegistry(folder.ATFolder):
 
 	def validate_bachelorlockers(self, lockerlist):
 		return self.validate_masterlockers(lockerlist)
-	
+
+	def parseLockerlist(self, lockerlist):
+		return Lockerlist(lockerlist)
+
+	def getParsedMasterlockers(self):
+		return self.parseLockerlist(self.getMasterlockers())
+
+	def getParsedBachelorlockers(self):
+		return self.parseLockerlist(self.getBachelorlockers())
+
 
 
 # This line tells Archetypes about the content type

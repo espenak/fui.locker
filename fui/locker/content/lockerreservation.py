@@ -43,40 +43,21 @@ del schema["description"]
 
 
 
-
-
-
 class LockerValidationError(Exception):
 	""" Base class for validation errors. """
 
-class LockerIdValidationError(LockerValidationError):
-	def __init__(self, lockerlist, lockerid):
-		errormsg = u"Invalid locker number: %d. The following locker numbers " \
-				"are available for registration this semester: %s." % (
-				lockerid, ",".join(lockerlist))
-		LockerValidationError.__init__(self, errormsg)
 
 def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
-	""" Validates a lockernumber against a lockerlist like the 
-	bachelorlist and masterlist, and check that the lockerid is unique. """
-	def parseLockerlist(lockerlist):
-		def toint(item):
-			i = item.replace(" ", "").split("-")
-			return int(i[0]), int(i[1])
-		return map(toint, lockerlist)
-
-	def isInLockerList(lockerlist, lockerid):
-		for start, end in parseLockerlist(lockerlist):
-			if lockerid >= start and lockerid < end:
-				return True
-		return False
-
+	""" Validates a lockernumber against a Lockerlist and check that the
+	lockerid is unique. """
 	if not isinstance(lockerid, int):
 		if not lockerid.isdigit():
 			raise LockerIdValidationError(lockerlist, lockerid)
 		lockerid = int(lockerid)
-	if not isInLockerList(lockerlist, lockerid):
-		raise LockerIdValidationError(lockerlist, lockerid)
+
+	if not lockerid in lockerlist:
+		raise LockerValidationError(
+				u"There is no locker with the requested number (%d)." % lockerid )
 
 	for id, item in context.objectItems():
 		if edit_id != id and item.getLockerid() == lockerid:
@@ -115,7 +96,7 @@ class LockerReservation(base.ATCTContent):
 
 	def validate_lockerid(self, lockerid):
 		parent = self.aq_inner.aq_parent
-		masterlockers = parent.getMasterlockers()
+		masterlockers = parent.getParsedMasterlockers()
 		try:
 			validate_lockerid(parent, masterlockers, lockerid, self.getId())
 		except LockerValidationError, e:
@@ -124,7 +105,6 @@ class LockerReservation(base.ATCTContent):
 
 	def validate_title(self, username):
 		parent = self.aq_inner.aq_parent
-		masterlockers = parent.getMasterlockers()
 		try:
 			validate_username(username)
 			validate_unique_username(parent, username, self.getId())
