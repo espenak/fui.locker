@@ -52,7 +52,10 @@ class LockerReservationForm(form.AddForm):
 	form_fields = form.FormFields(ILockerReservationForm)
 	template = ViewPageTemplateFile("lockerreservation_form.pt")
 	result_template = ViewPageTemplateFile('lockerreservation_form_result.pt')
-	error_template = ViewPageTemplateFile('lockerreservation_form_error.pt')
+
+	def __init__(self, *args, **kwargs):
+		form.AddForm.__init__(self, *args, **kwargs)
+		self.errormsg = None
 
 	# This trick hides the editable border and tabs in Plone
 	def __call__(self):
@@ -63,7 +66,7 @@ class LockerReservationForm(form.AddForm):
 		context = aq_inner(self.context)
 
 		# Get input data
-		username = dadexterityta["username"]
+		username = data["username"]
 		lockerid = data["lockerid"]
 
 		# Validate
@@ -73,7 +76,7 @@ class LockerReservationForm(form.AddForm):
 			lockerreservation.validate_unique_username(context, username)
 		except lockerreservation.LockerValidationError, e:
 			self.errormsg = unicode(e)
-			return self.error_template()
+			return self.template()
 
 		# Elevate rights to allow anonymous users to add to the db
 		user = context.getWrappedOwner()

@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"                                            
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master">
+<body>
+  <div metal:fill-slot="main">
+    <div metal:use-macro="context/@@base-pageform.html/macros/form">
+      <metal:block fill-slot="extra_info">
+				<!-- Error message (if any) -->
+				<dl tal:condition="view/errormsg" class="portalMessage error">
+					<dt>Error</dt>
+					<dd><span tal:replace="view/errormsg"/></dd>
+				</dl>
+
+				<!-- Standard header and stuff just like an article -->
+				<h1 class="documentFirstHeading">
+					<span metal:use-macro="python:context.widget('title', mode='view')" />
+				</h1>
+        <div class="documentDescription">
+            <span metal:use-macro="python:context.widget('description', mode='view')" />
+        </div>
+				<div tal:condition="text"
+					metal:use-macro="python:context.widget('text', mode='view')" />
+
+
+				<p>To register a locker, we require your <em>UiO username</em> and a
+				<em>locker number</em>. we currently have these lockers available.</p>
+      </metal:block>
+    </div>
+  </div>
+</body>
+</html>
