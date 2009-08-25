@@ -13,7 +13,7 @@ def test_suite():
 
         # Demonstrate the main content types
         ztc.ZopeDocFileSuite(
-            'README.txt', package='fui.locker',
+            'tests/functional.doctest', package='fui.locker',
             test_class=base.CinemaContentFunctionalTestCase,
             optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
 
