@@ -29,9 +29,36 @@ from fui.locker.config import PROMOTIONS_PORTLET_COLUMN
 
 from fui.locker import LockerMessageFactory as _
 
+
+
+RANGE_DESCRIPTION = u"""One locker per line. Each line must contain two
+numbers separated by '-'. The numbers define a valid locker-number range.
+Example line: 1000-2999. This line will make any number between 1000 and 2999,
+including the two numbers, a valid locker number. You can define as many ranges
+as you like, each on a separate line."""
+
+
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
 LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
+	atapi.LinesField("masterlockers",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.LinesWidget(
+				label = u"Lockers available to master students",
+				description = RANGE_DESCRIPTION)
+		),
+
+	atapi.LinesField("bachelorlockers",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.LinesWidget(
+				label = u"Lockers available to bachelor students",
+				description = RANGE_DESCRIPTION)
+		),
+
 	atapi.TextField("text",
 		required=False,
 		searchable=True,
@@ -43,26 +70,6 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 				description = _(u""),
 				rows = 25,
 				allow_file_upload = False),
-		),
-
-	atapi.LinesField("masterlockers",
-		required = True,
-		searchable = False,
-		storage = atapi.AnnotationStorage(),
-		widget = atapi.LinesWidget(
-				label = _(u"Master lockers"),
-				description = _(u"One locker-range per line. " \
-						"Example line: 1000-2000."))
-		),
-
-	atapi.LinesField("bachelorlockers",
-		required = True,
-		searchable = False,
-		storage = atapi.AnnotationStorage(),
-		widget = atapi.LinesWidget(
-				label = _(u"Bachelor lockers"),
-				description = _(u"One locker-range per line. " \
-						"Example line: 2010-3025."))
 		),
 	))
 

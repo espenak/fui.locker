@@ -22,6 +22,7 @@ class InvalidUioUsernameError(schema.ValidationError):
 
 USERNAME_PATT = re.compile(u"^[a-z]+$")
 def validate_username(value):
+	""" Validates that the username is a lowercase english word. """
 	if not USERNAME_PATT.match(value):
 		raise InvalidUioUsernameError(value)
 
@@ -56,30 +57,6 @@ class LockerReservationForm(formbase.PageForm):
 	def __call__(self):
 		return super(LockerReservationForm, self).__call__()
 
-	def check_unique(self, context, lockerid, username):
-		""" Check that lockerid and username is unique """
-		for id in context.objectIds():
-			uname, lid = id.split("_")
-			if int(lid) == lockerid:
-				return u"The requested locker, %s, is already reserved by " \
-					"someone else." % lid
-			elif uname == username:
-				return u"You can only reserve one locker."
-		return None
-
-	@memoize
-	def parseLockerlist(self, lockerlist):
-		def toint(item):
-			i = item.replace(" ", "").split("-")
-			return int(i[0]), int(i[1])
-		return map(toint, lockerlist)
-
-	def isInLockerList(self, lockerlist, lockerid):
-		for start, end in self.parseLockerlist(lockerlist):
-			if lockerid >= start and lockerid < end:
-				return True
-		return False
-
 	@form.action("save")
 	def action_send(self, action, data):
 		context = aq_inner(self.context)
@@ -87,18 +64,14 @@ class LockerReservationForm(formbase.PageForm):
 		# Get input data
 		username = data["username"]
 		lockerid = data["lockerid"]
-		rid = "%s_%d" % (username, lockerid)
 
-		# Validate locker number and username
-		errmsg = None
+		# Validate
 		masterlockers = context.getMasterlockers()
-		if not self.isInLockerList(masterlockers, lockerid):
-			errormsg = u"Invalid locker number. Existing locker numbers: %s." % (
-					",".join(masterlockers))
-		else:
-			errormsg = self.check_unique(context, lockerid, username)
-		if errormsg:
-			self.errormsg = errormsg
+		try:
+			lockerreservation.validate_lockerid(context, masterlockers, lockerid)
+			lockerreservation.validate_unique_username(context, username)
+		except lockerreservation.LockerValidationError, e:
+			self.errormsg = unicode(e)
 			return self.error_template()
 
 		# Elevate rights to allow anonymous users to add to the db
@@ -108,8 +81,8 @@ class LockerReservationForm(formbase.PageForm):
 		# Create a new LockerReservation
 		context.invokeFactory(
 				type_name = "LockerReservation",
-				id = rid)
-		r = context[rid]
+				id = username)
+		r = context[username]
 		r.setLockerid(lockerid)
 		r.setTitle(username)
 

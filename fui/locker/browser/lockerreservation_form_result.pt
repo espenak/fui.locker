@@ -6,8 +6,8 @@
 		<dl class="portalMessage info">
 			<dt>Info</dt>
 			<dd>
-				Locker <em><span tal:replace="view/lockerid"/></em> has been registered
-				on user <em><span tal:replace="view/username"/></em>.
+				Locker <em><span tal:replace="view/lockerid"/></em> was successfully
+				reserved for user <em><span tal:replace="view/username"/></em>.
 			</dd>
 		</dl>
 		<p>The locker you selected is only available to master students. If you are not
