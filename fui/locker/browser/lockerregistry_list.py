@@ -26,16 +26,8 @@ class LockerRegistryList(BrowserView):
 	@memoize
 	def locker_reservations(self):
 		context = aq_inner(self.context)
-		catalog = getToolByName(context, 'portal_catalog')
-
-		# Query for all ILockerReservation objects below the current
-		# locker registry. Order by title (which is username)
-		qry = catalog(object_provides=ILockerReservation.__identifier__,
-				path = dict(query = '/'.join(context.getPhysicalPath()),
-				depth = 1),
-				sort_on = 'sortable_title')
-
-		return [  
-			dict(url=res.getURL(), title=res.Title,
-				lockerid=res.getObject().lockerid)
-			for res in qry]
+		return [
+			dict(url = "/".join(item.getPhysicalPath()),
+				title = item.Title(),
+				lockerid = item.getLockerid())
+			for id, item in context.objectItems()]

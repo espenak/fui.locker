@@ -7,53 +7,21 @@
 	  i18n:domain="fui.locker">
 
 	<body>
+		<metal:main fill-slot="body">
+			<h1 class="documentFirstHeading">
+				<span metal:use-macro="python:context.widget('title', mode='view')" />
+			</h1>
 
-		<metal:main fill-slot="main">
-			<tal:main-macro metal:define-macro="main"
-					 tal:define="text context/text;">
-
-				<div tal:replace="structure provider:plone.abovecontenttitle" />
-
-				<h1 class="documentFirstHeading">
-					<span metal:use-macro="python:context.widget('title', mode='view')" />
-				</h1>
-
-				<div tal:replace="structure provider:plone.belowcontenttitle" />
-
-				<div class="documentDescription">
-					<span metal:use-macro="python:context.widget('description', mode='view')" />
-				</div>
-
-				<div tal:replace="structure provider:plone.abovecontentbody" />
-
-				<p tal:condition="python: not text and is_editable"
-					 i18n:translate="no_body_text"
-					 class="discreet">
-				</p>
-
-				<div tal:condition="text" metal:use-macro="python:context.widget('text', mode='view')" />
-
-
-				<tal:areas condition="view/have_locker_reservations">
-					<ul>
-						<tal:block repeat="res view/locker_reservations">
-							<li>
-								<a tal:attributes="href res/url" tal:content="res/title"/>
-								(<span tal:content="res/lockerid"/>)
-							</li>
-						</tal:block>
-					</ul>
-				</tal:areas>
-
-
-				<div metal:use-macro="context/document_relateditems/macros/relatedItems">
-					show related items if they exist
-				</div>
-			
-				<div tal:replace="structure provider:plone.belowcontentbody" />
-
-			</tal:main-macro>
+			<tal:areas condition="view/have_locker_reservations">
+				<ul>
+					<tal:block repeat="res view/locker_reservations">
+						<li>
+							<a tal:attributes="href res/url" tal:content="res/title"/>
+							(<span tal:content="res/lockerid"/>)
+						</li>
+					</tal:block>
+				</ul>
+			</tal:areas>
 		</metal:main>
-
 	</body>
 </html>
