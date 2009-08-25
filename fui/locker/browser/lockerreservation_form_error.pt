@@ -3,20 +3,15 @@
 </head>
 <body>
 	<div metal:fill-slot="body">
-		<div class="error">
-			<h1>Error</h1>
-			
-			<p><span tal:replace="view/errormsg"/></p>
-			
-			<p>
-				<a href="" title="Try again"
-						tal:attributes="href python: context.absolute_url()">
-					Try again</a>
-			</p>
-		</div>
+		<dl class="portalMessage error">
+			<dt>Error</dt>
+			<dd><span tal:replace="view/errormsg"/></dd>
+		</dl>	
+		<p>
+			<a href="" title="Try again"
+					tal:attributes="href python: context.absolute_url()">
+				Try again</a>
+		</p>
 	</div>
-
-
-
 </body>
 </html>

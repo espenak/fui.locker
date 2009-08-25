@@ -71,14 +71,13 @@
 	<alias from="view" to="lockerregistry_form"/>
 	<alias from="list" to="lockerregistry_list"/>
 
-
-	<action title="List" action_id="list" category="object" condition_expr=""
-			url_expr="string:${folder_url}/list" visible="True">
+	<action title="Form" action_id="view" category="object" condition_expr=""
+			url_expr="string:${folder_url}/" visible="True">
 		<permission value="View"/>
 	</action>
 
-	<action title="Form" action_id="view" category="object" condition_expr=""
-			url_expr="string:${folder_url}/" visible="True">
+	<action title="List" action_id="list" category="object" condition_expr=""
+			url_expr="string:${folder_url}/list" visible="True">
 		<permission value="View"/>
 	</action>
 
