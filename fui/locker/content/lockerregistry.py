@@ -9,6 +9,7 @@ Please see README.txt for more information on how the content types in
 this package are used.
 """
 
+import re
 from zope.interface import implements
 from zope.component import adapter, getMultiAdapter, getUtility
 
@@ -36,6 +37,8 @@ numbers separated by '-'. The numbers define a valid locker-number range.
 Example line: 1000-2999. This line will make any number between 1000 and 2999,
 including the two numbers, a valid locker number. You can define as many ranges
 as you like, each on a separate line."""
+
+LOCKERLIST_PATT = re.compile("^\d+-\d+$")
 
 
 # This is the Archetypes schema, defining fields and widgets. We extend
@@ -97,19 +100,17 @@ class LockerRegistry(folder.ATFolder):
 	
 	# We then associate the schema with our content type
 	schema = LockerRegistrySchema
+
+	def validate_masterlockers(self, lockerlist):
+		for line in lockerlist:
+			if not LOCKERLIST_PATT.match(line):
+				return "Invalid number-range: %s. " \
+						"Example of valid range: 2000-3500." % line
+		return None
+
+	def validate_bachelorlockers(self, lockerlist):
+		return self.validate_masterlockers(lockerlist)
 	
-	# Our interface specifies that we should use simple Python properties
-	# for various fields. To simplify creating these, we can map them to 
-	# the Archetypes schema, using an ATFieldProperty. Note, however,
-	# that the default Archetypes storage is AttributeStorage. If the name
-	# of the property and the name of the corresponding field are the same,
-	# these may conflict. Therefore, we explicitly switch the 'title' and
-	# 'description' fields (which are inherited from Archetypes' 
-	# ExtensibleMetadata mix-in class) to AnnotationStorage above.
-	
-	title = atapi.ATFieldProperty('title')
-	description = atapi.ATFieldProperty('description')
-	text = atapi.ATFieldProperty('text')
 
 
 # This line tells Archetypes about the content type
