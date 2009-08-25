@@ -14,15 +14,7 @@ from AccessControl.SecurityManagement import newSecurityManager, noSecurityManag
 from fui.locker.content import lockerreservation
 from fui.locker import LockerMessageFactory as _
 from fui.locker.interfaces import ILockerReservation
-
-
-class InvalidLockerIdError(schema.ValidationError): 
-	__doc__ = u"Invalid locker id"
-
-def validate_lockerid(value):
-	if value < 1000 or value > 3999:
-		raise InvalidLockerIdError(value)
-	return True
+from plone.memoize.instance import memoize 
 
 
 class InvalidUioUsernameError(schema.ValidationError): 
@@ -51,8 +43,7 @@ class ILockerReservationForm(Interface):
 	lockerid = schema.Int(
 			title = lockerreservation.LOCKERID_TITLE,
 			description = lockerreservation.LOCKERID_DESCRIPTION,
-			required = True,
-			constraint = validate_lockerid)
+			required = True)
 
 
 
@@ -76,6 +67,19 @@ class LockerReservationForm(formbase.PageForm):
 				return u"You can only reserve one locker."
 		return None
 
+	@memoize
+	def parseLockerlist(self, lockerlist):
+		def toint(item):
+			i = item.replace(" ", "").split("-")
+			return int(i[0]), int(i[1])
+		return map(toint, lockerlist)
+
+	def isInLockerList(self, lockerlist, lockerid):
+		for start, end in self.parseLockerlist(lockerlist):
+			if lockerid >= start and lockerid < end:
+				return True
+		return False
+
 	@form.action("save")
 	def action_send(self, action, data):
 		context = aq_inner(self.context)
@@ -85,7 +89,14 @@ class LockerReservationForm(formbase.PageForm):
 		lockerid = data["lockerid"]
 		rid = "%s_%d" % (username, lockerid)
 
-		errormsg = self.check_unique(context, lockerid, username)
+		# Validate locker number and username
+		errmsg = None
+		masterlockers = context.getMasterlockers()
+		if not self.isInLockerList(masterlockers, lockerid):
+			errormsg = u"Invalid locker number. Existing locker numbers: %s." % (
+					",".join(masterlockers))
+		else:
+			errormsg = self.check_unique(context, lockerid, username)
 		if errormsg:
 			self.errormsg = errormsg
 			return self.error_template()

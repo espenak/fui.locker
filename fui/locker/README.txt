@@ -1,5 +1,5 @@
 ========================
- Optilux Cinema content
+fui.locker doctests
 ========================
 
 This package contains content types that pertain to the Optilux Cinema
@@ -64,32 +64,27 @@ contains cinemas and information about them. A "Film Folder" contains films.
 Verify that we have the links to create cinema and film folders, from the add
 item menu:
 
-    >>> browser.getLink(id='cinema-folder').url.endswith("createObject?type_name=Cinema+Folder")
+    >>> browser.getLink(id='lockerregistry').url.endswith("createObject?type_name=LockerRegistry")
     True
     
 
-Adding cinema folders and cinemas
----------------------------------
+Adding LockerRegisters and LockerReservations
+---------------------------------------------
     
-Let us now add a cinema folder and some cinemas. The cinema folder
-can contain a rich-text description of the cinema folder (e.g. of a group
-of cinemas), which will be displayed on the front page of that folder. 
-
     >>> browser.open(portal_url)
-    >>> browser.getLink(id='cinema-folder').click()
-    >>> browser.getControl(name='title').value = "Cinemas"
-    >>> browser.getControl(name='text').value = "<b>About this cinema</b>"
+    >>> browser.getLink(id='lockerregistry').click()
+    >>> browser.getControl(name='title').value = "Reg09"
     >>> browser.getControl(name='form_submit').click()
 
-This should have added an object called 'cinemas' in the portal root, invoking
+This should have added an object called 'Reg09' in the portal root, invoking
 the title-to-id renaming.
 
-    >>> 'cinemas' in self.portal.objectIds()
+    >>> 'reg09' in self.portal.objectIds()
     True
-    >>> cinemas = self.portal['cinemas']
-    >>> cinemas.title
-    'Cinemas'
-    >>> cinemas.text
-    '<b>About this cinema</b>'
+    >>> reg = self.portal["reg09"]
+    >>> reg.title
+    'Reg09'
+    >>> reg.masterlockers
+    ''
 
-    >>> cinemas_url = cinemas.absolute_url()
+    >>> reg_url = cinemas.absolute_url()

@@ -7,8 +7,8 @@ from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
 @onsetup
-def setup_fui.locker():
-    """Set up the additional products required for the Optilux Cinema Content.
+def setup_fui_locker():
+    """Set up the additional products required for the Fui Locker product.
     
     The @onsetup decorator causes the execution of this body to be deferred
     until the setup of the Plone site testing layer.
@@ -32,7 +32,7 @@ def setup_fui.locker():
 # installs the products we need for the Optilux package. Then, we let 
 # PloneTestCase set up this product on installation.
 
-setup_fui.locker()
+setup_fui_locker()
 ptc.setupPloneSite(products=['fui.locker'])
 
 class CinemaContentTestCase(ptc.PloneTestCase):

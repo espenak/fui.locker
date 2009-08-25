@@ -32,16 +32,37 @@ from fui.locker import LockerMessageFactory as _
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
 LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
-	atapi.TextField('text',
+	atapi.TextField("text",
 		required=False,
 		searchable=True,
 		storage=atapi.AnnotationStorage(),
 		validators=('isTidyHtmlWithCleanup',),
 		default_output_type='text/x-html-safe',
-		widget=atapi.RichWidget(label=_(u"Descriptive text"),
-								description=_(u""),
-								rows=25,
-								allow_file_upload=False),
+		widget=atapi.RichWidget(
+				label = _(u"Descriptive text"),
+				description = _(u""),
+				rows = 25,
+				allow_file_upload = False),
+		),
+
+	atapi.LinesField("masterlockers",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.LinesWidget(
+				label = _(u"Master lockers"),
+				description = _(u"One locker-range per line. " \
+						"Example line: 1000-2000."))
+		),
+
+	atapi.LinesField("bachelorlockers",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.LinesWidget(
+				label = _(u"Bachelor lockers"),
+				description = _(u"One locker-range per line. " \
+						"Example line: 2010-3025."))
 		),
 	))
 
