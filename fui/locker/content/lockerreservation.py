@@ -46,7 +46,7 @@ del schema["description"]
 class LockerValidationError(Exception):
 	""" Base class for validation errors. """
 
-class LockerNotFoundError(Exception):
+class LockerNotFoundError(LockerValidationError):
 	""" Base class for validation errors. """
 
 

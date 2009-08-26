@@ -77,6 +77,7 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 		searchable = False,
 		storage = atapi.AnnotationStorage(),
 		default = EMAIL_TPL,
+		allowable_content_types = ('text/plain',),
 		widget = atapi.TextAreaWidget(
 				rows = 10,
 				label = u"Notification email",

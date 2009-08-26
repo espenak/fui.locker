@@ -44,8 +44,3 @@ For developers
 Release a new version to pypi.python.org with::
 
     ~$ python setup.py egg_info -RDb "" sdist upload
-
-
-You can run plone in the foreground with:
-
-    ~$ plonectl fg
