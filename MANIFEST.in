@@ -1,0 +1,6 @@
+recursive-include plonetheme *
+global-exclude *pyc
+include *.rst
+global-include *.pt
+global-include *.xml
+global-include *.zcml
