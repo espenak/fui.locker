@@ -13,7 +13,7 @@ from plone.memoize.instance import memoize
 class LockerRegistryList(BrowserView):
 	""" Default view of a registry folder """
 	
-	__call__ = ViewPageTemplateFile('lockerregistry_list.pt')
+	__call__ = ViewPageTemplateFile('lockerregistry_overview.pt')
 
 
 	def __init__(self, *args, **kwargs):

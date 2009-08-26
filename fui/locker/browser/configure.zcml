@@ -7,8 +7,8 @@
 
 	<browser:page
 		for="..interfaces.ILockerRegistry"
-		name="lockerregistry_list"
-		class=".lockerregistry_list.LockerRegistryList"
+		name="lockerregistry_overview"
+		class=".lockerregistry_overview.LockerRegistryList"
 		permission="zope2.View"
 		/>
 

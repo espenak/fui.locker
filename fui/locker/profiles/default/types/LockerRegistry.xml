@@ -68,15 +68,15 @@
 	<alias from="edit" to="atct_edit"/>
 	<alias from="sharing" to="@@sharing"/>
 	<alias from="view" to="lockerregistry_form"/>
-	<alias from="list" to="lockerregistry_list"/>
+	<alias from="overview" to="lockerregistry_overview"/>
 
 	<action title="Form" action_id="view" category="object" condition_expr=""
 			url_expr="string:${folder_url}/" visible="True">
 		<permission value="View"/>
 	</action>
 
-	<action title="List" action_id="list" category="object" condition_expr=""
-			url_expr="string:${folder_url}/list" visible="True">
+	<action title="Oversikt" action_id="overview" category="object" condition_expr=""
+			url_expr="string:${folder_url}/overview" visible="True">
 		<permission value="Modify portal content"/>
 	</action>
 
