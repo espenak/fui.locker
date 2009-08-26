@@ -7,20 +7,11 @@
   <div metal:fill-slot="main">
     <div metal:use-macro="context/@@base-pageform.html/macros/form">
       <metal:block fill-slot="extra_info">
-
-				<!-- Error message (if any) -->
-				<dl tal:condition="view/errormsg" class="portalMessage error">
-					<dt>Error</dt>
-					<dd><span tal:replace="view/errormsg"/></dd>
-				</dl>
-	
-
-
 				<dl class="portalMessage info"
 						tal:condition="not: here/portal_membership/isAnonymousUser">
 					<dt>Registrering for dummies</dt>
 					<dd>
-						<p>Denne informasjonen er kun synlig når du er logget inn.</p>
+						Denne informasjonen er kun synlig når du er logget inn.
 						
 						<p>
 							Ettersom du er logget inn, kan du registrere skap for både master
@@ -32,21 +23,21 @@
 
 						<p>
 							Masterstudenter kan selv registrere skap. Bachelorstudenter må
-							komme på FUI kontoret og betale for skapet, for så å registreres av
-							et fui-medlem med dette skjemaet.
+							komme på FUI-kontoret og betale for skapet, for så å registreres av
+							et FUI-medlem med dette skjemaet.
 						</p>
 
 
 						<h3>Endre</h3>
 						<p>
 							For å endre informasjonen knyttet til et skap, finner du skapet i
-							<a href="overview">oversikt fanen</a>, og velger <em>edit</em>.
+							<a href="overview">oversiktfanen</a>, og velger <em>edit</em>.
 						</p>
 
 						<h3>Slett</h3>
 						<p>
 							For å slette en registrering, finner du skapet i
-							<a href="overview">oversikt fanen</a>, velger <em>view</em>. På
+							<a href="overview">oversiktfanen</a>, velger <em>view</em>.
 							Du kommer da til en side med informasjon om det valgte skapet.
 							Velg <em>operasjoner-&gt;slett</em>, og bekreft slettingen på siden
 							som dukker upp.
@@ -56,7 +47,7 @@
 						<h3>Tilgjengelige skap</h3>
 						<p>
 							Systemet har registrert følgende skap som tilgjengelige for
-							registrering. Du må bruke <a href="overview">oversikt fanen</a>
+							registrering. Du må bruke <a href="overview">oversiktfanen</a>
 							for å  se hvilke skap som er opptatt, eller bare prøve å registrere
 							til du finner et ledig skap.
 						</p>

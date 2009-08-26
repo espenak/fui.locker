@@ -9,7 +9,7 @@
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_overview"
 		class=".lockerregistry_overview.LockerRegistryOverview"
-		permission="cmf.ModifyPortalContent"
+		permission="cmf.AddPortalContent"
 		/>
 
 	<browser:page 

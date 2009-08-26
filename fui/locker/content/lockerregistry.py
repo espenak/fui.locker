@@ -84,21 +84,21 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 				description = EMAIL_DESCRIPTION)
 		),
 
-	atapi.LinesField("masterlockers",
-		required = True,
-		searchable = False,
-		storage = atapi.AnnotationStorage(),
-		widget = atapi.LinesWidget(
-				label = u"Lockers available to master students",
-				description = RANGE_DESCRIPTION)
-		),
-
 	atapi.LinesField("bachelorlockers",
 		required = True,
 		searchable = False,
 		storage = atapi.AnnotationStorage(),
 		widget = atapi.LinesWidget(
 				label = u"Lockers available to bachelor students",
+				description = RANGE_DESCRIPTION)
+		),
+
+	atapi.LinesField("masterlockers",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.LinesWidget(
+				label = u"Lockers available to master students",
 				description = RANGE_DESCRIPTION)
 		),
 

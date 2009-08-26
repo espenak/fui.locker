@@ -19,6 +19,13 @@ from plone.memoize.instance import memoize
 
 
 
+INFO_TPL = \
+u"""Locker %(lockerid)d was successfully reserved for %(fullname)s (%(username)s).
+This locker is only available to master students. If you are not a master student,
+please visit the. FUI office for manual registration."""
+
+
+
 class InvalidUioUsernameError(schema.ValidationError): 
 	__doc__ = u"Invalid UiO username"
 
@@ -34,6 +41,20 @@ def validate_username(value):
 		raise InvalidUioUsernameError(value)
 	return True
 	
+
+FULLNAME_PATT = re.compile("(?:In real life|Name): (.+?)$")
+def get_fullname(username):
+	p = subprocess.Popen(["finger", username], stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE)
+	for line in p.stdout:
+		m = FULLNAME_PATT.search(line)
+		if m:
+			return m.group(1)
+	raise ValueError("Could not find full name for user: %s." % username)
+
+
+	
+
 
 
 class ILockerReservationForm(Interface):
@@ -53,10 +74,6 @@ class ILockerReservationForm(Interface):
 class LockerReservationForm(form.AddForm):
 	form_fields = form.FormFields(ILockerReservationForm)
 	template = ViewPageTemplateFile("lockerreservation_form.pt")
-
-	def __init__(self, *args, **kwargs):
-		form.AddForm.__init__(self, *args, **kwargs)
-		self.errormsg = None
 
 	@form.action("Register")
 	def action_send(self, action, data):
@@ -79,15 +96,18 @@ class LockerReservationForm(form.AddForm):
 				lockerreservation.validate_lockerid(context,
 						context.getParsedBachelorlockers(), lockerid)
 				if context.portal_membership.isAnonymousUser():
-					self.errormsg = u"The locker you selected, %d, is " \
+					errormsg = u"The locker you selected, %d, is " \
 							"only available to master students. Please " \
 							"select another locker, or visit the FUI office " \
 							"to register a bachelor locker." % lockerid
+					IStatusMessage(self.request).addStatusMessage(errormsg,
+							type='error')
 					return self.template()
 
 			lockerreservation.validate_unique_username(context, username)
 		except lockerreservation.LockerValidationError, e:
-			self.errormsg = unicode(e)
+			IStatusMessage(self.request).addStatusMessage(unicode(e),
+					type='error')
 			return self.template()
 
 
@@ -113,6 +133,9 @@ class LockerReservationForm(form.AddForm):
 			# Reset secutitymanager to clear elevated rights
 			setSecurityManager(securityManagerBackup)
 
+		fullname = get_fullname(username)
+		info = INFO_TPL % locals()
+
 
 		##
 		## Email notification
@@ -132,17 +155,16 @@ class LockerReservationForm(form.AddForm):
 					debug = False,
 					From = from_address)
 
+			info += " A confirmation mail has been sent to your UiO email address."
+
+
+
 
 		##	
 		## This status message is displayed at the top of the
 		## page where the user is redirected.
 		##
-		IStatusMessage(self.request).addStatusMessage( 
-				u"Locker %d was successfully reserved for %s. " \
-				"This locker is only available to master students. " \
-				"If you are not a master student, please visit the " \
-				"FUI office for manual registration." % (lockerid, username),
-				type='info')
+		IStatusMessage(self.request).addStatusMessage(info, type='info')
 		
 		self.request.response.redirect(context.absolute_url()) 
 		return ''

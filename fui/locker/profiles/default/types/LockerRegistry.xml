@@ -77,7 +77,7 @@
 
 	<action title="Oversikt" action_id="overview" category="object" condition_expr=""
 			url_expr="string:${folder_url}/overview" visible="True">
-		<permission value="Modify portal content"/>
+		<permission value="View"/>
 	</action>
 
 	<action title="Edit" action_id="edit" category="object" condition_expr=""
