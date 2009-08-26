@@ -108,6 +108,7 @@ class LockerReservationForm(form.AddForm):
 			r = context[username]
 			r.setLockerid(lockerid)
 			r.setTitle(username)
+			r.setExcludeFromNav(True)
 		finally:
 			# Reset secutitymanager to clear elevated rights
 			setSecurityManager(securityManagerBackup)
