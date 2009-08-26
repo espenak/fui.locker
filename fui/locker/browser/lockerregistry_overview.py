@@ -10,9 +10,7 @@ from plone.memoize.instance import memoize
 
 
 
-class LockerRegistryList(BrowserView):
-	""" Default view of a registry folder """
-	
+class LockerRegistryOverview(BrowserView):
 	__call__ = ViewPageTemplateFile('lockerregistry_overview.pt')
 
 

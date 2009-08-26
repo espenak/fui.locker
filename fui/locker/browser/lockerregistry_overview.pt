@@ -12,6 +12,8 @@
 				<span metal:use-macro="python:context.widget('title', mode='view')" />
 			</h1>
 
+			Denne siden er en rapport med nyttig info/lenker knyttet til administrasjon
+			av systemet.
 
 			<h1>Epostlister</h1>
 			<p>

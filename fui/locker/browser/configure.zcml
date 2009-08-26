@@ -8,21 +8,21 @@
 	<browser:page
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_overview"
-		class=".lockerregistry_overview.LockerRegistryList"
-		permission="zope2.View"
+		class=".lockerregistry_overview.LockerRegistryOverview"
+		permission="cmf.ModifyPortalContent"
 		/>
 
 	<browser:page 
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_form"
 		class=".lockerreservation_form.LockerReservationForm"
-		permission="zope2.Public"
+		permission="zope2.View"
 		/>
 
 	<browser:page
 		for="..interfaces.ILockerReservation"
 		name="lockerreservation_view"
 		template="lockerreservation_view.pt"
-		permission="zope2.Public"
+		permission="zope2.View"
 		/>
 </configure>
