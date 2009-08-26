@@ -70,10 +70,25 @@ class LockerReservationForm(form.AddForm):
 		username = data["username"]
 		lockerid = data["lockerid"]
 
+		print context.getWrappedOwner().getUserName()
+
+
 		# Validate
-		masterlockers = context.getParsedMasterlockers()
 		try:
-			lockerreservation.validate_lockerid(context, masterlockers, lockerid)
+			try:
+				lockerreservation.validate_lockerid(context,
+						context.getParsedMasterlockers(), lockerid)
+			except lockerreservation.LockerValidationError, e:
+				# Only authenticated users can reserve bachelor lockers..
+				lockerreservation.validate_lockerid(context,
+						context.getParsedBachelorlockers(), lockerid)
+				if context.portal_membership.isAnonymousUser():
+					self.errormsg = u"The locker you selected, %d, is " \
+							"only available to master students. Please " \
+							"select another locker, or visit the FUI office " \
+							"to register a bachelor locker." % lockerid
+					return self.template()
+
 			lockerreservation.validate_unique_username(context, username)
 		except lockerreservation.LockerValidationError, e:
 			self.errormsg = unicode(e)

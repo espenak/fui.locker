@@ -154,6 +154,5 @@ class LockerRegistry(folder.ATFolder):
 		return self.parseLockerlist(self.getBachelorlockers())
 
 
-
 # This line tells Archetypes about the content type
 atapi.registerType(LockerRegistry, PROJECTNAME)

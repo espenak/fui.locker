@@ -12,14 +12,95 @@
 				<span metal:use-macro="python:context.widget('title', mode='view')" />
 			</h1>
 
-				<ul>
-					<tal:block repeat="res view/locker_reservations">
-						<li>
-							<a tal:attributes="href res/url" tal:content="res/title"/>
-							(<span tal:content="res/lockerid"/>)
-						</li>
-					</tal:block>
-				</ul>
+
+			<h1>Epostlister</h1>
+			<p>
+				Lister over epostaddressen til de registrerte brukerne, både med og uten
+				<em>@ulrik.uio.no</em>.
+			</p>
+
+
+			<h3>Bachelor</h3>
+			<p class="discreet">
+				<tal:block repeat="item view/getBachelorReservations">
+					<span tal:replace="item/username"/>,
+				</tal:block>
+			</p>
+			<p class="discreet">
+				<tal:block repeat="item view/getBachelorReservations">
+					<span tal:replace="item/username"/>@ulrik.uio.no,
+				</tal:block>
+			</p>
+
+			<h3>Master</h3>
+			<p class="discreet">
+				<tal:block repeat="item view/getMasterReservations">
+					<span tal:replace="item/username"/>,
+				</tal:block>
+			</p>
+			<p class="discreet">
+				<tal:block repeat="item view/getMasterReservations">
+					<span tal:replace="item/username"/>@ulrik.uio.no,
+				</tal:block>
+			</p>
+
+
+
+			<h1>Oversikt over reserverte/registrerte skap</h1>
+			<p class="discreet">
+				Tabellene er sortert etter skapnummer.
+			</p>
+
+			<h3>Bachelor</h3>
+			<table class="listing" id="bachelorlockers">
+				<thead>
+					<tr>
+						<th>Locker number</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th class="nosort">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr tal:repeat="item view/getBachelorReservations">
+						<td tal:content="item/lockerid"/>
+						<td tal:content="item/username"/>
+						<td>
+							<a tal:attributes="href python:'mailto:%s' % item['email']" tal:content="item/email"/>
+						</td>
+						<td>
+							<a tal:attributes="href item/viewurl">view</a> |
+							<a tal:attributes="href item/editurl">edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>Master</h3>
+			<table class="listing" id="masterlockers">
+				<thead>
+					<tr>
+						<th>Locker number</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th class="nosort">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr tal:repeat="item view/getMasterReservations">
+						<td tal:content="item/lockerid"/>
+						<td tal:content="item/username"/>
+						<td>
+							<a tal:attributes="href python:'mailto:%s' % item['email']" tal:content="item/email"/>
+						</td>
+						<td>
+							<a tal:attributes="href item/viewurl">view</a> |
+							<a tal:attributes="href item/editurl">edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
 		</metal:main>
 	</body>
 </html>

@@ -8,22 +8,46 @@ from fui.locker.interfaces import ILockerRegistry, ILockerReservation
 
 from plone.memoize.instance import memoize 
 
+
+
 class LockerRegistryList(BrowserView):
 	""" Default view of a registry folder """
 	
 	__call__ = ViewPageTemplateFile('lockerregistry_list.pt')
-	
-	# The memoize decorator means that the function will be executed only
-	# once (for a given set of arguments, but in this case there are no
-	# arguments). On subsequent calls, the return value is looked up from a
-	# cache, meaning we can call this function several times without a 
-	# performance hit.
-	
-	@memoize
-	def locker_reservations(self):
+
+
+	def __init__(self, *args, **kwargs):
+		BrowserView.__init__(self, *args, **kwargs)
 		context = aq_inner(self.context)
-		return [
-			dict(url = "/".join(item.getPhysicalPath()),
-				title = item.Title(),
+
+
+
+	#@memoize
+	def getReservations(self, lockerlist):
+		""" Get a list of LockerReservation objects with lockerid
+		in lockerlist. The list is sorted by lockerid. """
+		context = aq_inner(self.context)
+
+		r = [
+			dict(
+				viewurl = "/".join(item.getPhysicalPath()),
+				editurl = "%s/edit" % "/".join(item.getPhysicalPath()),
+				username = item.Title(),
+				email = "%s@ulrik.uio.no" % item.Title(),
 				lockerid = item.getLockerid())
-			for id, item in context.objectItems()]
+			for id, item in context.objectItems()
+			if item.getLockerid() in lockerlist]
+
+		def compare(a, b):
+			return cmp(a["lockerid"], b["lockerid"])
+		r.sort(compare)
+		return r
+
+
+	def getMasterReservations(self):
+		context = aq_inner(self.context)
+		return self.getReservations(context.getParsedMasterlockers())
+
+	def getBachelorReservations(self):
+		context = aq_inner(self.context)
+		return self.getReservations(context.getParsedBachelorlockers())	

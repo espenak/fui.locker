@@ -5,7 +5,7 @@
 			<h1>UiO username</h1>
 			<span tal:content="context/Title" />
 
-			<h1>Locker id</h1>
+			<h1>Locker number</h1>
 			<span tal:content="context/lockerid" />
 		</div>
 	</body>
