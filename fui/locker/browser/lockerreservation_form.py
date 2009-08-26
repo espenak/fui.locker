@@ -97,7 +97,7 @@ class LockerReservationForm(form.AddForm):
 						context.getParsedBachelorlockers(), lockerid)
 				if context.portal_membership.isAnonymousUser():
 					errormsg = u"The locker you selected, %d, is " \
-							"only available to master students. Please " \
+							"only available to bachelor students. Please " \
 							"select another locker, or visit the FUI office " \
 							"to register a bachelor locker." % lockerid
 					IStatusMessage(self.request).addStatusMessage(errormsg,
@@ -146,7 +146,8 @@ class LockerReservationForm(form.AddForm):
 			from_address = portal.getProperty('email_from_address')
 			subject = context.Title()
 			message = context.getEmailcontent() % dict(
-					username=username, lockerid=lockerid)
+					username=username, lockerid=lockerid,
+					fullname=fullname)
 
 			context.MailHost.secureSend(
 					message, to_address, from_address,

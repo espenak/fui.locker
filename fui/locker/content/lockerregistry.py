@@ -53,10 +53,10 @@ http://fui.ifi.uio.no"""
 
 EMAIL_DESCRIPTION = \
 u"""The email sent to notify a user about a registration. Use 
-'%(username)s' and '%(lockerid)s' to insert username and locker
-number. The subject of the mail is the title of this registry,
-and the from-address is the one configured globally in site
-settings."""
+'%(username)s', '%(fullname)s' and '%(lockerid)s' to insert
+names and locker number. The subject of the mail is the
+title of this registry, and the from-address is the one
+configured globally in site settings."""
 
 
 # This is the Archetypes schema, defining fields and widgets. We extend
@@ -67,7 +67,7 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 		searchable = False,
 		storage = atapi.AnnotationStorage(),
 		widget = atapi.BooleanWidget(
-				label = u"Use email notifcation?",
+				label = u"Use email notification?",
 				description = u"Send an email to the user when he/she " \
 						"registers a locker")
 		),
