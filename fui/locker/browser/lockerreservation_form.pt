@@ -7,12 +7,15 @@
   <div metal:fill-slot="main">
     <div metal:use-macro="context/@@base-pageform.html/macros/form">
       <metal:block fill-slot="extra_info">
+
 				<!-- Error message (if any) -->
 				<dl tal:condition="view/errormsg" class="portalMessage error">
 					<dt>Error</dt>
 					<dd><span tal:replace="view/errormsg"/></dd>
 				</dl>
 	
+
+
 				<dl class="portalMessage info"
 						tal:condition="not: here/portal_membership/isAnonymousUser">
 					<dt>Registrering for dummies</dt>

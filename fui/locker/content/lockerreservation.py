@@ -46,6 +46,9 @@ del schema["description"]
 class LockerValidationError(Exception):
 	""" Base class for validation errors. """
 
+class LockerNotFoundError(Exception):
+	""" Base class for validation errors. """
+
 
 def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
 	""" Validates a lockernumber against a Lockerlist and check that the
@@ -56,7 +59,7 @@ def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
 		lockerid = int(lockerid)
 
 	if not lockerid in lockerlist:
-		raise LockerValidationError(
+		raise LockerNotFoundError(
 				u"There is no locker with the requested number (%d)." % lockerid )
 
 	for id, item in context.objectItems():

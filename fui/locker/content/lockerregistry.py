@@ -41,9 +41,48 @@ as you like, each on a separate line."""
 LOCKERLIST_PATT = re.compile("^\d+-\d+$")
 
 
+EMAIL_TPL = \
+u"""Someone has registered locker '%(lockerid)s' with your username
+(%(username)s). If this someone is not you, please let us know by
+replying to this email.
+
+--
+Fagutvalget ved Institutt for informatikk (FUI)
+http://fui.ifi.uio.no"""
+
+
+EMAIL_DESCRIPTION = \
+u"""The email sent to notify a user about a registration. Use 
+'%(username)s' and '%(lockerid)s' to insert username and locker
+number. The subject of the mail is the title of this registry,
+and the from-address is the one configured globally in site
+settings."""
+
+
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
 LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
+	atapi.BooleanField("emailnotification",
+		required = False,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		widget = atapi.BooleanWidget(
+				label = u"Use email notifcation?",
+				description = u"Send an email to the user when he/she " \
+						"registers a locker")
+		),
+
+	atapi.TextField("emailcontent",
+		required = True,
+		searchable = False,
+		storage = atapi.AnnotationStorage(),
+		default = EMAIL_TPL,
+		widget = atapi.TextAreaWidget(
+				rows = 10,
+				label = u"Notification email",
+				description = EMAIL_DESCRIPTION)
+		),
+
 	atapi.LinesField("masterlockers",
 		required = True,
 		searchable = False,
@@ -69,8 +108,8 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 		validators=('isTidyHtmlWithCleanup',),
 		default_output_type='text/x-html-safe',
 		widget=atapi.RichWidget(
-				label = _(u"Descriptive text"),
-				description = _(u""),
+				label = u"Descriptive text",
+				description = u"This text is shown above the registration form.",
 				rows = 25,
 				allow_file_upload = False),
 		),

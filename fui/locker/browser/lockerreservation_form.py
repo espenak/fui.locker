@@ -18,6 +18,7 @@ from fui.locker.interfaces import ILockerReservation
 from plone.memoize.instance import memoize 
 
 
+
 class InvalidUioUsernameError(schema.ValidationError): 
 	__doc__ = u"Invalid UiO username"
 
@@ -52,33 +53,28 @@ class ILockerReservationForm(Interface):
 class LockerReservationForm(form.AddForm):
 	form_fields = form.FormFields(ILockerReservationForm)
 	template = ViewPageTemplateFile("lockerreservation_form.pt")
-	result_template = ViewPageTemplateFile('lockerreservation_form_result.pt')
 
 	def __init__(self, *args, **kwargs):
 		form.AddForm.__init__(self, *args, **kwargs)
 		self.errormsg = None
 
-	# This trick hides the editable border and tabs in Plone
-	def __call__(self):
-		return super(LockerReservationForm, self).__call__()
-
-	@form.action("save")
+	@form.action("Register")
 	def action_send(self, action, data):
 		context = aq_inner(self.context)
+		urltool = getToolByName(context, 'portal_url')
+		portal = urltool.getPortalObject()
 
-		# Get input data
+
+		##
+		## Validate
+		##
 		username = data["username"]
 		lockerid = data["lockerid"]
-
-		print context.getWrappedOwner().getUserName()
-
-
-		# Validate
 		try:
 			try:
 				lockerreservation.validate_lockerid(context,
 						context.getParsedMasterlockers(), lockerid)
-			except lockerreservation.LockerValidationError, e:
+			except lockerreservation.LockerNotFoundError, e:
 				# Only authenticated users can reserve bachelor lockers..
 				lockerreservation.validate_lockerid(context,
 						context.getParsedBachelorlockers(), lockerid)
@@ -93,6 +89,11 @@ class LockerReservationForm(form.AddForm):
 		except lockerreservation.LockerValidationError, e:
 			self.errormsg = unicode(e)
 			return self.template()
+
+
+		##
+		## Save
+		##
 
 		# Elevate rights to allow anonymous users to add to the db
 		securityManagerBackup = getSecurityManager()
@@ -111,7 +112,36 @@ class LockerReservationForm(form.AddForm):
 			# Reset secutitymanager to clear elevated rights
 			setSecurityManager(securityManagerBackup)
 
-		# Set some template variables and show the "success" template
-		self.username = username
-		self.lockerid = lockerid
-		return self.result_template()
+
+		##
+		## Email notification
+		##
+		if context.getEmailnotification():
+			email_charset = portal.getProperty('email_charset')
+			to_address = "%s@ulrik.uio.no" % username
+			from_address = portal.getProperty('email_from_address')
+			subject = context.Title()
+			message = context.getEmailcontent() % dict(
+					username=username, lockerid=lockerid)
+
+			context.MailHost.secureSend(
+					message, to_address, from_address,
+					subject = subject,
+					charset = email_charset,
+					debug = False,
+					From = from_address)
+
+
+		##	
+		## This status message is displayed at the top of the
+		## page where the user is redirected.
+		##
+		IStatusMessage(self.request).addStatusMessage( 
+				u"Locker %d was successfully reserved for %s. " \
+				"This locker is only available to master students. " \
+				"If you are not a master student, please visit the " \
+				"FUI office for manual registration." % (lockerid, username),
+				type='info')
+		
+		self.request.response.redirect(context.absolute_url()) 
+		return ''
