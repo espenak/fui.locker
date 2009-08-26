@@ -20,9 +20,8 @@ from plone.memoize.instance import memoize
 
 
 INFO_TPL = \
-u"""Locker %(lockerid)d was successfully reserved for %(fullname)s (%(username)s).
-This locker is only available to master students. If you are not a master student,
-please visit the. FUI office for manual registration."""
+u"""Locker %(lockerid)d was successfully reserved for
+%(fullname)s (%(username)s)."""
 
 
 
@@ -49,7 +48,7 @@ def get_fullname(username):
 	for line in p.stdout:
 		m = FULLNAME_PATT.search(line)
 		if m:
-			return m.group(1)
+			return unicode(m.group(1), "latin-1")
 	raise ValueError("Could not find full name for user: %s." % username)
 
 
