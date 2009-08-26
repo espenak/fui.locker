@@ -11,12 +11,18 @@
 						tal:condition="not: here/portal_membership/isAnonymousUser">
 					<dt>Registrering for dummies</dt>
 					<dd>
-						Denne informasjonen er kun synlig når du er logget inn.
+						<em>Denne informasjonen er kun synlig når du er logget inn.</em>
 						
+						<p style="clear:both">Vi deler skap inn i to kategorier:</p>
+						<ol>
+							<li>skap på områder hvor kun masterstudenter har tilgang.</li>
+							<li>skap på områder hvor alle har tilgang (beregnet på bachelorstudenter).</li>
+						</ol>
+
 						<p>
 							Ettersom du er logget inn, kan du registrere skap for både master
 							og bachelor med skjemaet nedenfor. De som ikke er logget inn, kan bare
-							registrere skap på områder reservert for masterstudenter.
+							registrere skapnumre på områder reservert for masterstudenter.
 						</p>
 
 						<h3>Legg til</h3>
