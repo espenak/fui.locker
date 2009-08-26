@@ -10,7 +10,8 @@ from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage 
 from Acquisition import aq_inner 
 from Products.CMFCore.utils import getToolByName 
-from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager, \
+	getSecurityManager, setSecurityManager
 from fui.locker.content import lockerreservation
 from fui.locker import LockerMessageFactory as _
 from fui.locker.interfaces import ILockerReservation
@@ -79,21 +80,21 @@ class LockerReservationForm(form.AddForm):
 			return self.template()
 
 		# Elevate rights to allow anonymous users to add to the db
+		securityManagerBackup = getSecurityManager()
 		user = context.getWrappedOwner()
 		newSecurityManager(context.REQUEST, user)
 
-		# Create a new LockerReservation
-		context.invokeFactory(
-				type_name = "LockerReservation",
-				id = username)
-		r = context[username]
-		r.setLockerid(lockerid)
-		r.setTitle(username)
-
-		# Clear elevated rights
-		# This makes it appear like authenticated users are logged out,
-		# but they are not!
-		noSecurityManager()
+		try:
+			# Create a new LockerReservation
+			context.invokeFactory(
+					type_name = "LockerReservation",
+					id = username)
+			r = context[username]
+			r.setLockerid(lockerid)
+			r.setTitle(username)
+		finally:
+			# Reset secutitymanager to clear elevated rights
+			setSecurityManager(securityManagerBackup)
 
 		# Set some template variables and show the "success" template
 		self.username = username
