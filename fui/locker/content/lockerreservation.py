@@ -100,7 +100,11 @@ class LockerReservation(base.ATCTContent):
 		try:
 			validate_lockerid(parent, masterlockers, lockerid, self.getId())
 		except LockerValidationError, e:
-			return unicode(e)
+			bachelorlockers = parent.getParsedBachelorlockers()
+			try:
+				validate_lockerid(parent, bachelorlockers, lockerid, self.getId())
+			except LockerValidationError, e:
+				return unicode(e)
 		return None
 
 	def validate_title(self, username):
