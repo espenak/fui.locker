@@ -16,13 +16,13 @@
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_form"
 		class=".lockerreservation_form.LockerReservationForm"
-		permission="zope2.View"
+		permission="zope2.Public"
 		/>
 
 	<browser:page
 		for="..interfaces.ILockerReservation"
 		name="lockerreservation_view"
 		template="lockerreservation_view.pt"
-		permission="zope2.View"
+		permission="zope2.Public"
 		/>
 </configure>
