@@ -1,0 +1,25 @@
+dl.fuilockerInfo {
+	background-color:#FFFFE3;
+	border:1px solid #999966;
+	font-size:12px;
+	margin-bottom:1em;
+}
+dl.fuilockerInfo a {
+	border:medium none !important;
+	color:black !important;
+	text-decoration:underline;
+}
+dl.fuilockerInfo dt {
+	background-color:#999966;
+	color:White;
+	float:left;
+	font-weight:bold;
+	line-height:1.25em;
+	margin:0 0.5em 0 0;
+	padding:0.5em 0.75em;
+}
+dl.fuilockerInfo dd {
+	line-height:1.25em;
+	margin:0;
+	padding:0.5em;
+}

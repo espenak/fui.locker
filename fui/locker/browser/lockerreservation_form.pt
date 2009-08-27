@@ -7,7 +7,7 @@
   <div metal:fill-slot="main">
     <div metal:use-macro="context/@@base-pageform.html/macros/form">
       <metal:block fill-slot="extra_info">
-				<dl class="portalMessage info"
+				<dl class="fuilockerInfo"
 						tal:condition="not: here/portal_membership/isAnonymousUser">
 					<dt>Registrering for dummies</dt>
 					<dd>
@@ -31,6 +31,11 @@
 							Masterstudenter kan selv registrere skap. Bachelorstudenter må
 							komme på FUI-kontoret og betale for skapet, for så å registreres av
 							et FUI-medlem med dette skjemaet.
+
+							<em tal:condition="context/getEmailnotification">
+								Ved suksessfull registrering, sendes en epost til epostkontoen som
+								tilhører brukernavnet.
+							</em>
 						</p>
 
 

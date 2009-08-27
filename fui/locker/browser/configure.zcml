@@ -5,6 +5,11 @@
 
 	<include package="plone.app.contentmenu" />
 
+	<browser:resource
+		name="fui.locker.style.css"
+		file="style.css"
+		/>
+
 	<browser:page
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_overview"

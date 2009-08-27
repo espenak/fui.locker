@@ -143,18 +143,19 @@ class LockerReservationForm(form.AddForm):
 			email_charset = portal.getProperty('email_charset')
 			to_address = "%s@ulrik.uio.no" % username
 			from_address = portal.getProperty('email_from_address')
+			from_full = "%s <%s>" % (portal.getProperty("email_from_name"),
+					from_address)
 			subject = context.Title()
 			message = context.getEmailcontent() % dict(
 					username=username, lockerid=lockerid,
 					fullname=fullname)
 
-			print 
-			#context.MailHost.secureSend(
-			#		message, to_address, from_address,
-			#		subject = subject,
-			#		charset = email_charset,
-			#		debug = False,
-			#		From = from_address)
+			context.MailHost.secureSend(
+					message, to_address, from_address,
+					subject = subject,
+					charset = email_charset,
+					debug = False,
+					From = from_full)
 
 			info += " A confirmation mail has been sent to your UiO email address."
 
