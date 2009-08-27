@@ -1,4 +1,4 @@
-import re, subprocess
+import re, subprocess, sys
 
 from zope.interface import Interface 
 from zope import schema 
@@ -22,6 +22,8 @@ from plone.memoize.instance import memoize
 INFO_TPL = \
 u"""Locker %(lockerid)d was successfully reserved for
 %(fullname)s (%(username)s)."""
+SYSTEM_ENCODING = sys.getfilesystemencoding()
+FINGER_FULLNAME_PATT = re.compile("(?:In real life|Name): (.+?)$", re.MULTILINE)
 
 
 
@@ -41,18 +43,16 @@ def validate_username(value):
 	return True
 	
 
-FULLNAME_PATT = re.compile("(?:In real life|Name): (.+?)$")
 def get_fullname(username):
-	p = subprocess.Popen(["finger", username], stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE)
-	for line in p.stdout:
-		m = FULLNAME_PATT.search(line)
+	p = subprocess.Popen(["finger", "espeak"], stdout=subprocess.PIPE,
+			stderr=subprocess.STDOUT)
+	output = "".join(p.stdout.readlines())
+	retcode = p.wait()
+	if retcode == 0:
+		m = FINGER_FULLNAME_PATT.search(output)
 		if m:
-			return unicode(m.group(1), "latin-1")
-	raise ValueError("Could not find full name for user: %s." % username)
-
-
-	
+			return unicode(m.group(1), SYSTEM_ENCODING)
+	raise ValueError(u"Could not find full name for user: %s." % username)
 
 
 
@@ -148,12 +148,13 @@ class LockerReservationForm(form.AddForm):
 					username=username, lockerid=lockerid,
 					fullname=fullname)
 
-			context.MailHost.secureSend(
-					message, to_address, from_address,
-					subject = subject,
-					charset = email_charset,
-					debug = False,
-					From = from_address)
+			print 
+			#context.MailHost.secureSend(
+			#		message, to_address, from_address,
+			#		subject = subject,
+			#		charset = email_charset,
+			#		debug = False,
+			#		From = from_address)
 
 			info += " A confirmation mail has been sent to your UiO email address."
 
