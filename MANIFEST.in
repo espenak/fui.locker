@@ -4,3 +4,4 @@ include *.rst
 global-include *.pt
 global-include *.xml
 global-include *.zcml
+global-include *.css
