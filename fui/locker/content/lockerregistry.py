@@ -32,13 +32,19 @@ from fui.locker import LockerMessageFactory as _
 
 
 
-RANGE_DESCRIPTION = u"""One locker per line. Each line must contain two
-numbers separated by '-'. The numbers define a valid locker-number range.
-Example line: 1000-2999. This line will make any number between 1000 and 2999,
-including the two numbers, a valid locker number. You can define as many ranges
-as you like, each on a separate line."""
+RANGE_DESCRIPTION = u"""One locker-range per line. Each line must contain a
+label (a description of where the lockers are located), followed by 
+number-ranges ('-' separated by numbers). The numbers define a valid
+locker-number range. Example line: 'Bachelor lesesal:110-120,122-150'.
+This line will make any number between 110 and 150, including the two numbers
+and excluding 121, a valid locker number. You can define as many ranges as you
+like, each on a separate line."""
 
-LOCKERLIST_PATT = re.compile("^\d+-\d+$")
+LOCKERLIST_PATT = re.compile("^.+?:(\d+-\d+)(,\d+-\d+)*$")
+
+LOCKER_EXAMPLE = \
+u"""Bachelor lesesal:110-120,122-150
+Bachelorlesesal 1.etg:4001-4010,4013-4020,4100-4130"""
 
 
 EMAIL_TPL = \
@@ -49,6 +55,8 @@ replying to this email.
 --
 Fagutvalget ved Institutt for informatikk (FUI)
 http://fui.ifi.uio.no"""
+
+
 
 
 EMAIL_DESCRIPTION = \
@@ -87,6 +95,7 @@ LockerRegistrySchema = folder.ATFolderSchema.copy() + atapi.Schema((
 	atapi.LinesField("bachelorlockers",
 		required = True,
 		searchable = False,
+		default = LOCKER_EXAMPLE,
 		storage = atapi.AnnotationStorage(),
 		widget = atapi.LinesWidget(
 				label = u"Lockers available to bachelor students",
@@ -129,7 +138,7 @@ finalizeATCTSchema(LockerRegistrySchema, folderish=True, moveDiscussion=False)
 
 
 
-class Lockerrange(object):
+class LockerRange(object):
 	def __init__(self, start, end):
 		self.start = start
 		self.end = end
@@ -141,13 +150,14 @@ class Lockerrange(object):
 		return "%s-%s" % (self.start, self.end)
 
 
-class Lockerlist(object):
-	def __init__(self, lockerlist):
+class LockerArea(object):
+	def __init__(self, label, ranges):
 		self.ranges = []
-		for r in lockerlist:
+		self.label = label
+		for r in ranges:
 			start, end = r.split("-")
-			self.ranges.append(Lockerrange(int(start), int(end)))
-	
+			self.ranges.append(LockerRange(int(start), int(end)))
+
 	def __contains__(self, number):
 		for r in self.ranges:
 			if number in r:
@@ -156,6 +166,37 @@ class Lockerlist(object):
 
 	def __iter__(self):
 		return self.ranges.__iter__()
+
+	def __str__(self):
+		return u"%s: %s" % (self.label, self.rangesToString())
+
+	def rangesToString(self):
+		return ", ".join([str(x) for x in self.ranges])
+
+
+
+class Lockerlist(object):
+	def __init__(self, lockerlist):
+		self.areas = []
+		for i in lockerlist:
+			label, ranges = i.split(":")
+			self.areas.append(LockerArea(label, ranges.split(",")))
+	
+	def __contains__(self, number):
+		for a in self.areas:
+			if number in a:
+				return True
+		return False
+
+	def getArea(self, number):
+		for a in self.areas:
+			if number in a:
+				return a
+		return None
+
+	def __iter__(self):
+		return self.areas.__iter__()
+
 
 
 class LockerRegistry(folder.ATFolder):
@@ -177,8 +218,9 @@ class LockerRegistry(folder.ATFolder):
 	def validate_masterlockers(self, lockerlist):
 		for line in lockerlist:
 			if not LOCKERLIST_PATT.match(line):
-				return "Invalid number-range: %s. " \
-						"Example of valid range: 2000-3500." % line
+				return "Invalid locker line: %s. " \
+						"Example of valid line: " \
+						"'Example room:2000-3500,200-300'." % line
 		return None
 
 	def validate_bachelorlockers(self, lockerlist):

@@ -55,7 +55,7 @@ def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
 	lockerid is unique. """
 	if not isinstance(lockerid, int):
 		if not lockerid.isdigit():
-			raise LockerIdValidationError(lockerlist, lockerid)
+			raise LockerValidationError("Locker id must be a number.")
 		lockerid = int(lockerid)
 
 	if not lockerid in lockerlist:

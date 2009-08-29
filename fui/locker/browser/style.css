@@ -23,3 +23,52 @@ dl.fuilockerInfo dd {
 	margin:0;
 	padding:0.5em;
 }
+
+
+dl.fuilockerAvailable dt {
+	font-size: 0.9em;
+	font-weight: normal;
+	font-style: italic;
+}
+
+dl.fuilockerAvailable dt:after {
+	content: ":";
+}
+
+
+div#fuilockerAvailable {
+	width: 140px;
+	border: 1px solid #777;
+	background-color: #eee;
+	color: #333;
+	float:right;
+	padding: 5px;
+	margin-left: 20px;
+}
+
+
+#fuilockerAvailable h2 {
+	color: #333;
+	font-size: 1.2em;
+	margin: 0 0 10px 0;
+}
+
+#fuilockerAvailable h3 {
+	color: #333;
+	background-color: #ddd;
+	font-size: 1.0em;
+	padding: 3px 5px 3px 5px;
+	margin: 15px -5px 10px -5px;
+	border-style: dashed;
+	border-width: 1px 0 1px 0;
+	border-color: #777;
+}
+
+
+#fuilockerAvailable dl {
+	margin: 0;
+}
+
+#fuilockerAvailable dd {
+	margin-left: 20px;
+}

@@ -26,15 +26,20 @@ class LockerRegistryOverview(BrowserView):
 		in lockerlist. The list is sorted by lockerid. """
 		context = aq_inner(self.context)
 
-		r = [
-			dict(
-				viewurl = "/".join(item.getPhysicalPath()),
-				editurl = "%s/edit" % "/".join(item.getPhysicalPath()),
-				username = item.Title(),
-				email = "%s@ulrik.uio.no" % item.Title(),
-				lockerid = item.getLockerid())
-			for id, item in context.objectItems()
-			if item.getLockerid() in lockerlist]
+		r = []
+		for id, item in context.objectItems():
+			area = lockerlist.getArea(item.getLockerid())
+			if area:
+				url = "/".join(item.getPhysicalPath())
+				r.append(dict(
+					editurl = "%s/edit" % url,
+					deleteurl = "%s/delete_confirmation" % url,
+					username = item.Title(),
+					email = "%s@ulrik.uio.no" % item.Title(),
+					area = area,
+					lockerid = item.getLockerid()))
+		return r
+
 
 		def compare(a, b):
 			return cmp(a["lockerid"], b["lockerid"])

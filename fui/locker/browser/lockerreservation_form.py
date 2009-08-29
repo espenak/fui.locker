@@ -26,6 +26,11 @@ SYSTEM_ENCODING = sys.getfilesystemencoding()
 FINGER_FULLNAME_PATT = re.compile("(?:In real life|Name): (.+?)$", re.MULTILINE)
 
 
+BACHELOR_INFO = \
+"""The requested locker is for bachelor students. You can not reserve it
+using the web-interface. You must come to the FUI-office to register and
+pay for the locker."""
+
 
 class InvalidUioUsernameError(schema.ValidationError): 
 	__doc__ = u"Invalid UiO username"
@@ -44,7 +49,7 @@ def validate_username(value):
 	
 
 def get_fullname(username):
-	p = subprocess.Popen(["finger", "espeak"], stdout=subprocess.PIPE,
+	p = subprocess.Popen(["finger", username], stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT)
 	output = "".join(p.stdout.readlines())
 	retcode = p.wait()
@@ -95,12 +100,12 @@ class LockerReservationForm(form.AddForm):
 				lockerreservation.validate_lockerid(context,
 						context.getParsedBachelorlockers(), lockerid)
 				if context.portal_membership.isAnonymousUser():
-					errormsg = u"The locker you selected, %d, is " \
-							"only available to bachelor students. Please " \
-							"select another locker, or visit the FUI office " \
-							"to register a bachelor locker." % lockerid
-					IStatusMessage(self.request).addStatusMessage(errormsg,
-							type='error')
+					IStatusMessage(self.request).addStatusMessage(
+							"The locker you requested, %s is available." % lockerid,
+							type='info')
+					IStatusMessage(self.request).addStatusMessage(
+							BACHELOR_INFO,
+							type='warning')
 					return self.template()
 
 			lockerreservation.validate_unique_username(context, username)

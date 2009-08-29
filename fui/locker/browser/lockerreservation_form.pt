@@ -39,45 +39,51 @@
 						</p>
 
 
-						<h3>Endre</h3>
+						<h3>Endre/Rediger</h3>
 						<p>
 							For å endre informasjonen knyttet til et skap, finner du skapet i
-							<a href="overview">oversiktfanen</a>, og velger <em>edit</em>.
+							<a href="overview">oversiktfanen</a>, og velger <em>rediger</em>.
 						</p>
 
 						<h3>Slett</h3>
 						<p>
-							For å slette en registrering, finner du skapet i
-							<a href="overview">oversiktfanen</a>, velger <em>view</em>.
-							Du kommer da til en side med informasjon om det valgte skapet.
-							Velg <em>operasjoner-&gt;slett</em>, og bekreft slettingen på siden
-							som dukker opp.
+							For å endre informasjonen knyttet til et skap, finner du skapet i
+							<a href="overview">oversiktfanen</a>, og velger <em>slett</em>.
 						</p>
 
 
 						<h3>Tilgjengelige skap</h3>
 						<p>
-							Systemet har registrert følgende skap som tilgjengelige for
-							registrering. Du må bruke <a href="overview">oversiktfanen</a>
-							for å  se hvilke skap som er opptatt, eller bare prøve å registrere
-							til du finner et ledig skap.
+							Du må bruke <a href="overview">oversiktfanen</a> for å  se hvilke
+							skap som er opptatt, eller bare prøve å registrere til du finner
+							et ledig skap.
 						</p>
-
-						Bachelor:
-						<blockquote>
-							<tal:block repeat="range context/getBachelorlockers">
-								<span tal:content="range"/><br/>
-							</tal:block>
-						</blockquote>
-						
-						Master:
-						<blockquote>
-							<tal:block repeat="range context/getMasterlockers">
-								<span tal:content="range"/><br/>
-							</tal:block>
-						</blockquote>
 					</dd>
 				</dl>
+
+				<div id="fuilockerAvailable">
+					<h2>Available lockers</h2>
+
+					<p class="discreet">
+						These are all the lockers available to IFI students, grouped
+						by areas for bachelor and master students. Some of
+						them might already be reserved.
+					</p>
+
+					<h3>Bachelor</h3>
+					<dl class="fuilockerAvailable"
+							tal:repeat="area context/getParsedBachelorlockers">
+						<dt tal:content="area/label"/>
+						<dd tal:content="area/rangesToString"/>
+					</dl>
+
+					<h3>Master</h3>
+						<dl class="fuilockerAvailable"
+							tal:repeat="area context/getParsedMasterlockers">
+						<dt tal:content="area/label"/>
+						<dd tal:content="area/rangesToString"/>
+					</dl>
+				</div>
 
 
 				<!--<p tal:content="python:dir(context)"/>-->
@@ -86,12 +92,21 @@
 				<h1 class="documentFirstHeading">
 					<span metal:use-macro="python:context.widget('title', mode='view')" />
 				</h1>
-        <div class="documentDescription">
+        <p class="documentDescription">
             <span metal:use-macro="python:context.widget('description', mode='view')" />
-        </div>
+        </p>
 				<div tal:condition="text"
 					metal:use-macro="python:context.widget('text', mode='view')" />
 
+
+
+
+				<h2>Reserve / check availablity</h2>
+
+				<p class="discreet">
+					With this form, you can check the availablity of bachelor lockers, and
+					master students can reserve a locker.
+				</p>
       </metal:block>
     </div>
   </div>

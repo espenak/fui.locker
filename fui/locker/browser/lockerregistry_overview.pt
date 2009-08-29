@@ -26,22 +26,24 @@
 			<table class="listing" id="bachelorlockers">
 				<thead>
 					<tr>
-						<th>Locker number</th>
-						<th>Username</th>
+						<th>Skapnummer</th>
+						<th>Område</th>
+						<th>Brukernavn</th>
 						<th>Email</th>
-						<th class="nosort">Actions</th>
+						<th class="nosort">Annet</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr tal:repeat="item view/getBachelorReservations">
 						<td tal:content="item/lockerid"/>
+						<td tal:content="item/area/label"/>
 						<td tal:content="item/username"/>
 						<td>
 							<a tal:attributes="href python:'mailto:%s' % item['email']" tal:content="item/email"/>
 						</td>
 						<td>
-							<a tal:attributes="href item/viewurl">view</a> |
-							<a tal:attributes="href item/editurl">edit</a>
+							<a tal:attributes="href item/editurl">rediger</a> |
+							<a tal:attributes="href item/deleteurl">slett</a>
 						</td>
 					</tr>
 				</tbody>
@@ -51,22 +53,24 @@
 			<table class="listing" id="masterlockers">
 				<thead>
 					<tr>
-						<th>Locker number</th>
-						<th>Username</th>
+						<th>Skapnummer</th>
+						<th>Område</th>
+						<th>Brukernavn</th>
 						<th>Email</th>
-						<th class="nosort">Actions</th>
+						<th class="nosort">Annet</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr tal:repeat="item view/getMasterReservations">
 						<td tal:content="item/lockerid"/>
+						<td tal:content="item/area/label"/>
 						<td tal:content="item/username"/>
 						<td>
 							<a tal:attributes="href python:'mailto:%s' % item['email']" tal:content="item/email"/>
 						</td>
 						<td>
-							<a tal:attributes="href item/viewurl">view</a> |
-							<a tal:attributes="href item/editurl">edit</a>
+							<a tal:attributes="href item/editurl">rediger</a> |
+							<a tal:attributes="href item/deleteurl">slett</a>
 						</td>
 					</tr>
 				</tbody>
