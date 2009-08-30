@@ -25,19 +25,8 @@ dl.fuilockerInfo dd {
 }
 
 
-dl.fuilockerAvailable dt {
-	font-size: 0.9em;
-	font-weight: normal;
-	font-style: italic;
-}
-
-dl.fuilockerAvailable dt:after {
-	content: ":";
-}
-
-
-div#fuilockerAvailable {
-	width: 140px;
+dl#fuilockerAvailable {
+	width: 160px;
 	border: 1px solid #777;
 	background-color: #eee;
 	color: #333;
@@ -47,13 +36,17 @@ div#fuilockerAvailable {
 }
 
 
-#fuilockerAvailable h2 {
+dl#fuilockerAvailable dt#fuilockerAvailableTitle {
 	color: #333;
 	font-size: 1.2em;
 	margin: 0 0 10px 0;
 }
 
-#fuilockerAvailable h3 {
+dl#fuilockerAvailable dd {
+	margin: 0;
+}
+
+dl#fuilockerAvailable dt.fuilockerAvailableHeader {
 	color: #333;
 	background-color: #ddd;
 	font-size: 1.0em;
@@ -65,13 +58,24 @@ div#fuilockerAvailable {
 }
 
 
-#fuilockerAvailable dl {
-	margin: 0;
+
+dl#fuilockerAvailable dd dd dl {
+	margin: 3px 0 0 0;
+	font-size: 0.9em;
+}
+dl#fuilockerAvailable dd dd dl dt {
+	font-size: 0.9em;
+	font-weight: normal;
+	font-style: italic;
+}
+dl#fuilockerAvailable dd dd dl dt:after {
+	content: ":";
+}
+dl#fuilockerAvailable dd dd dl dd {
+	margin-left: 15px;
 }
 
-#fuilockerAvailable dd {
-	margin-left: 20px;
-}
+
 
 #fuilockerInfoLabel {
 	cursor: pointer;

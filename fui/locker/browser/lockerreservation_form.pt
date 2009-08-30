@@ -82,34 +82,41 @@
 					</dd>
 				</dl>
 
-				<div id="fuilockerAvailable">
-					<h2>Available lockers</h2>
-
-					<p class="discreet">
-						These are all the lockers available to IFI students, grouped
-						by areas for bachelor and master students. Some of
-						them might already be reserved.
-					</p>
-
-					<h3>Bachelor</h3>
-					<dl class="fuilockerAvailable"
-							tal:repeat="area context/getParsedBachelorlockers">
-						<dt tal:content="area/label"/>
-						<dd tal:content="area/rangesToString"/>
-					</dl>
-
-					<h3>Master</h3>
-						<dl class="fuilockerAvailable"
-							tal:repeat="area context/getParsedMasterlockers">
-						<dt tal:content="area/label"/>
-						<dd tal:content="area/rangesToString"/>
-					</dl>
-				</div>
+	
 
 
-				<!--<p tal:content="python:dir(context)"/>-->
 
-				<!-- Standard header and stuff just like an article -->
+				<dl class="portlet" id="fuilockerAvailable">
+					<dt id="fuilockerAvailableTitle">Available lockers</dt>
+
+					<dd>
+						<p class="discreet">
+							These are all the lockers available to IFI students, grouped
+							by areas for bachelor and master students. Some of
+							them might already be reserved.
+						</p>
+
+						<dl>
+							<dt class="fuilockerAvailableHeader">Bachelor</dt>
+							<dd>
+								<dl tal:repeat="area context/getParsedBachelorlockers">
+									<dt tal:content="area/label"/>
+									<dd tal:content="area/rangesToString"/>
+								</dl>
+							</dd>
+
+							<dt class="fuilockerAvailableHeader">Master</dt>
+							<dd>
+								<dl tal:repeat="area context/getParsedMasterlockers">
+									<dt tal:content="area/label"/>
+									<dd tal:content="area/rangesToString"/>
+								</dl>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
+
+
 				<h1 class="documentFirstHeading">
 					<span metal:use-macro="python:context.widget('title', mode='view')" />
 				</h1>
