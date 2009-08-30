@@ -6,58 +6,79 @@
 <body>
   <div metal:fill-slot="main">
     <div metal:use-macro="context/@@base-pageform.html/macros/form">
-      <metal:block fill-slot="extra_info">
+			<metal:block fill-slot="extra_info">
+
+				<script type="text/javascript">
+					$(document).ready(function() {
+						var label = "Registrering for dummies";
+						$("#fuilockerInfoBody").hide();
+						$("#fuilockerInfoLabel").text(label + " +");
+
+						$("#fuilockerInfoLabel").toggle(function(){
+								$("#fuilockerInfoBody").show('slow');
+								$("#fuilockerInfoLabel").text(label + " -");
+							},function(){
+								$("#fuilockerInfoBody").hide('slow');
+								$("#fuilockerInfoLabel").text(label + " +");
+							}
+						);
+					});
+				</script>
+
+
 				<dl class="fuilockerInfo"
 						tal:condition="not: here/portal_membership/isAnonymousUser">
-					<dt>Registrering for dummies</dt>
+					<dt id="fuilockerInfoLabel">Registrering for dummies</dt>
 					<dd>
-						<em>Denne informasjonen er kun synlig når du er logget inn.</em>
+						<em>Klikk '+' for hjelp (kun synlig når du er logget inn).</em>
 						
-						<p style="clear:both">Vi deler skap inn i to kategorier:</p>
-						<ol>
-							<li>skap på områder hvor kun masterstudenter har tilgang.</li>
-							<li>skap på områder hvor alle har tilgang (beregnet på bachelorstudenter).</li>
-						</ol>
+						<div id="fuilockerInfoBody">
+							<p style="clear:both">Vi deler skap inn i to kategorier:</p>
+							<ol>
+								<li>skap på områder hvor kun masterstudenter har tilgang.</li>
+								<li>skap på områder hvor alle har tilgang (beregnet på bachelorstudenter).</li>
+							</ol>
 
-						<p>
-							Ettersom du er logget inn, kan du registrere skap for både master
-							og bachelor med skjemaet nedenfor. De som ikke er logget inn, kan bare
-							registrere skapnumre på områder reservert for masterstudenter.
-						</p>
+							<p>
+								Ettersom du er logget inn, kan du registrere skap for både master
+								og bachelor med skjemaet nedenfor. De som ikke er logget inn, kan bare
+								registrere skapnumre på områder reservert for masterstudenter.
+							</p>
 
-						<h3>Legg til</h3>
+							<h3>Legg til</h3>
 
-						<p>
-							Masterstudenter kan selv registrere skap. Bachelorstudenter må
-							komme på FUI-kontoret og betale for skapet, for så å registreres av
-							et FUI-medlem med dette skjemaet.
+							<p>
+								Masterstudenter kan selv registrere skap. Bachelorstudenter må
+								komme på FUI-kontoret og betale for skapet, for så å registreres av
+								et FUI-medlem med dette skjemaet.
 
-							<em tal:condition="context/getEmailnotification">
-								Ved suksessfull registrering, sendes en epost til epostkontoen som
-								tilhører brukernavnet.
-							</em>
-						</p>
-
-
-						<h3>Endre/Rediger</h3>
-						<p>
-							For å endre informasjonen knyttet til et skap, finner du skapet i
-							<a href="overview">oversiktfanen</a>, og velger <em>rediger</em>.
-						</p>
-
-						<h3>Slett</h3>
-						<p>
-							For å endre informasjonen knyttet til et skap, finner du skapet i
-							<a href="overview">oversiktfanen</a>, og velger <em>slett</em>.
-						</p>
+								<em tal:condition="context/getEmailnotification">
+									Ved suksessfull registrering, sendes en epost til epostkontoen som
+									tilhører brukernavnet.
+								</em>
+							</p>
 
 
-						<h3>Tilgjengelige skap</h3>
-						<p>
-							Du må bruke <a href="overview">oversiktfanen</a> for å  se hvilke
-							skap som er opptatt, eller bare prøve å registrere til du finner
-							et ledig skap.
-						</p>
+							<h3>Endre/Rediger</h3>
+							<p>
+								For å endre informasjonen knyttet til et skap, finner du skapet i
+								<a href="overview">oversiktfanen</a>, og velger <em>rediger</em>.
+							</p>
+
+							<h3>Slett</h3>
+							<p>
+								For å endre informasjonen knyttet til et skap, finner du skapet i
+								<a href="overview">oversiktfanen</a>, og velger <em>slett</em>.
+							</p>
+
+
+							<h3>Tilgjengelige skap</h3>
+							<p>
+								Du må bruke <a href="overview">oversiktfanen</a> for å  se hvilke
+								skap som er opptatt, eller bare prøve å registrere til du finner
+								et ledig skap.
+							</p>
+						</div>
 					</dd>
 				</dl>
 

@@ -10,6 +10,11 @@
 		file="style.css"
 		/>
 
+	<browser:resource
+		name="fui.locker.jquery.js"
+		file="jquery.js"
+		/>
+
 	<browser:page
 		for="..interfaces.ILockerRegistry"
 		name="lockerregistry_overview"

@@ -72,3 +72,7 @@ div#fuilockerAvailable {
 #fuilockerAvailable dd {
 	margin-left: 20px;
 }
+
+#fuilockerInfoLabel {
+	cursor: pointer;
+}
