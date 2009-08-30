@@ -139,6 +139,19 @@ finalizeATCTSchema(LockerRegistrySchema, folderish=True, moveDiscussion=False)
 
 
 class LockerRange(object):
+	"""
+	>>> r = LockerRange(10, 20)
+	>>> 10 in r
+	True
+	>>> 15 in r
+	True
+	>>> 20 in r
+	True
+	>>> 9 in r
+	False
+	>>> str(r)
+	'10-20'
+	"""
 	def __init__(self, start, end):
 		self.start = start
 		self.end = end
@@ -151,6 +164,23 @@ class LockerRange(object):
 
 
 class LockerArea(object):
+	"""
+	>>> a = LockerArea('Area test', ['10-20', '30-40', '100-200'])
+	>>> 10 in a
+	True
+	>>> 40 in a
+	True
+	>>> 35 in a
+	True
+	>>> 21 in a
+	False
+	>>> len([r for r in a])
+	3
+	>>> a.rangesToString()
+	'10-20, 30-40, 100-200'
+	>>> str(a)
+	'Area test: 10-20, 30-40, 100-200'
+	"""
 	def __init__(self, label, ranges):
 		self.ranges = []
 		self.label = label
@@ -176,6 +206,22 @@ class LockerArea(object):
 
 
 class Lockerlist(object):
+	"""
+	>>> raw = ['Test one:1-2,10-20,1000-2000', 'Test two:30-40']
+	>>> l = Lockerlist(raw)
+	>>> 10 in l
+	True
+	>>> 20 in l
+	True
+	>>> 40 in l
+	True
+	>>> 35 in l
+	True
+	>>> 10000 in l
+	False
+	>>> len([a for a in l])
+	2
+	"""
 	def __init__(self, lockerlist):
 		self.areas = []
 		for i in lockerlist:

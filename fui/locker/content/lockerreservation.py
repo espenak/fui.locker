@@ -52,7 +52,27 @@ class LockerNotFoundError(LockerValidationError):
 
 def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
 	""" Validates a lockernumber against a Lockerlist and check that the
-	lockerid is unique. """
+	lockerid is unique.
+
+	>>> from fui.locker.content.lockerreservation import validate_lockerid
+	>>> from fui.locker.content.lockerregistry import Lockerlist
+	>>> lockerlist = Lockerlist(['Test:10-20'])
+
+	>>> reg = self.folder.registry
+	>>> validate_lockerid(reg, lockerlist, 11)
+	>>> validate_lockerid(reg, lockerlist, "11")
+
+	>>> validate_lockerid(reg, lockerlist, "a")
+	Traceback (most recent call last):
+	...
+	LockerValidationError: ...
+
+	>>> validate_lockerid(reg, lockerlist, 10, reg.reserv1.getId())
+	>>> validate_lockerid(reg, lockerlist, 10)
+	Traceback (most recent call last):
+	...
+	LockerValidationError: ...
+	"""
 	if not isinstance(lockerid, int):
 		if not lockerid.isdigit():
 			raise LockerValidationError("Locker id must be a number.")
@@ -70,7 +90,20 @@ def validate_lockerid(context, lockerlist, lockerid, edit_id=None):
 
 
 def validate_unique_username(context, username, edit_id=None):
-	""" Check that username is unique """
+	""" Check that username is unique.
+	
+	>>> r = self.folder.registry.reserv1
+	>>> r.setTitle("test")
+
+	>>> from fui.locker.content.lockerreservation import validate_unique_username
+	>>> validate_unique_username(self.folder.registry, "a")
+
+	>>> validate_unique_username(self.folder.registry, "test", r.getId())
+	>>> validate_unique_username(self.folder.registry, "test")
+	Traceback (most recent call last):
+	...
+	LockerValidationError: ...
+	"""
 	for id, item in context.objectItems():
 		if edit_id != id and item.Title() == username:
 			raise LockerValidationError(
@@ -81,12 +114,28 @@ def validate_unique_username(context, username, edit_id=None):
 
 INVALID_USERNAME = u"Invalid UiO username"
 USERNAME_PATT = re.compile(u"^[a-z]+$")
-def validate_username(value):
+def validate_username(username):
 	""" Validates that the username is a lowercase english word,
-	and that the 'id' command returns 0 when called with the username. """
-	if not USERNAME_PATT.match(value):
+	and that the 'id' command returns 0 when called with the username.
+	
+	>>> from fui.locker.content.lockerreservation import validate_username
+	>>> import os
+	>>> username = os.environ["USER"]
+	>>> validate_username(username)
+
+	>>> validate_username("hopefullynosuchuser")
+	Traceback (most recent call last):
+	...
+	LockerValidationError: ...
+
+	>>> validate_username("123")
+	Traceback (most recent call last):
+	...
+	LockerValidationError: ...
+	"""
+	if not USERNAME_PATT.match(username):
 		raise LockerValidationError(INVALID_USERNAME)
-	retcode = subprocess.call(["id", value], stdout=subprocess.PIPE,
+	retcode = subprocess.call(["id", username], stdout=subprocess.PIPE,
 			stderr=subprocess.PIPE)
 	if not retcode == 0:
 		raise LockerValidationError(INVALID_USERNAME)

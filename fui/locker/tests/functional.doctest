@@ -1,81 +1,31 @@
-========================
-fui.locker doctests
-========================
+===========================
+fui.locker functional tests
+===========================
 
-This package contains content types that pertain to the Optilux Cinema
-application. In this testbrowser doctest, we will demonstrate how the content 
-types interact. See tests/test_doctest.py for how it is set up.
 
-Setting up and logging in
--------------------------
+Setting up and log in as admin
+------------------------------
 
-We use zope.testbrowser to simulate browser interaction in order to show
-the main flow of pages. This is not a true functional test, because we also
-inspect and modify the internal state of the ZODB, but it is a useful way of
-making sure we test the full end-to-end process of creating and modifying
-content.
-
-	>>> from Products.Five.testbrowser import Browser
-	>>> browser = Browser()
+	>>> browser = self.browser
 	>>> portal_url = self.portal.absolute_url()
+	>>> self.loginAdminClick()
 
-The following is useful when writing and debugging testbrowser tests. It lets
-us see error messages properly.
 
-	>>> browser.handleErrors = False
-	>>> self.portal.error_log._ignored_exceptions = ()
-
-We then turn off the various portlets, because they sometimes duplicate links
-and text (e.g. the navtree, the recent recent items listing) that we wish to
-test for in our own views. Having no portlets makes things easier.
-
-	>>> from zope.component import getUtility, getMultiAdapter
-	>>> from plone.portlets.interfaces import IPortletManager
-	>>> from plone.portlets.interfaces import IPortletAssignmentMapping
-
-	>>> left_column = getUtility(IPortletManager, name=u"plone.leftcolumn")
-	>>> left_assignable = getMultiAdapter((self.portal, left_column), IPortletAssignmentMapping)
-	>>> for name in left_assignable.keys():
-	...	 del left_assignable[name]
-
-	>>> right_column = getUtility(IPortletManager, name=u"plone.rightcolumn")
-	>>> right_assignable = getMultiAdapter((self.portal, right_column), IPortletAssignmentMapping)
-	>>> for name in right_assignable.keys():
-	...	 del right_assignable[name]
-
-Finally, we need to log in as the portal owner, i.e. an administrator user. We
-do this from the login page.
-
-	>>> from Products.PloneTestCase.setup import portal_owner, default_password
-
-	>>> browser.open(portal_url + '/login_form?came_from=' + portal_url)
-	>>> browser.getControl(name='__ac_name').value = portal_owner
-	>>> browser.getControl(name='__ac_password').value = default_password
-	>>> browser.getControl(name='submit').click()
-
-Addable content
----------------
-
-Cinema content is managed inside two root content types: A "Cinema Folder"
-contains cinemas and information about them. A "Film Folder" contains films.
-
+Make sure admin has links to add
+--------------------------------
 	>>> browser.open(portal_url)
-
-Verify that we have the links to create cinema and film folders, from the add
-item menu:
-
 	>>> browser.getLink(id='lockerregistry').url.endswith("createObject?type_name=LockerRegistry")
 	True
 	
 
-Add LockerRegister
-------------------
+Add LockerRegister as admin
+---------------------------
 	
 	>>> browser.open(portal_url)
 	>>> browser.getLink(id='lockerregistry').click()
 	>>> browser.getControl(name='title').value = "Reg09"
-	>>> browser.getControl(name='bachelorlockers:lines').value = "1000-1999"
-	>>> browser.getControl(name='masterlockers:lines').value = "2000-2999\n4000-3999"
+	>>> browser.getControl(name='bachelorlockers:lines').value = "One:1000-1999"
+	>>> browser.getControl(name='masterlockers:lines').value = "A:2000-2999\nB:4000-3999"
 	>>> browser.getControl(name='form_submit').click()
 
 This should have added an object called 'Reg09' in the portal root, invoking
@@ -84,21 +34,51 @@ the title-to-id renaming.
 	>>> 'reg09' in self.portal.objectIds()
 	True
 	>>> reg = self.portal["reg09"]
-	>>> reg.title
+	>>> reg.Title()
 	'Reg09'
 	>>> reg.getBachelorlockers()
-	('1000-1999',)
+	('One:1000-1999',)
 	>>> reg.getMasterlockers()
-	('2000-2999', '4000-3999')
+	('A:2000-2999', 'B:4000-3999')
+
+No need to test these further since we already have tests for Lockerlist:
+	>>> 1000 in reg.getParsedBachelorlockers()
+	True
+	>>> 2000 in reg.getParsedMasterlockers()
+	True
 
 
 
 Add LockerReservation using the public form
 -------------------------------------------
-	>>> browser.open(reg.absolute_url())
-	>>> browser.getControl(name='form.username').value = 'root'
-	>>> browser.getControl(name='form.lockerid').value = '2000'
-	>>> browser.getControl(name='form.actions.save').click()
 
-	>>> 'root_2000' in reg.objectIds()
+	>>> import os
+	>>> currentUser = os.environ['USER']
+	>>> alternativeUser = 'root'
+
+	>>> browser.open(reg.absolute_url())
+	>>> browser.getControl(name='form.username').value = currentUser
+	>>> browser.getControl(name='form.lockerid').value = '2000'
+	>>> browser.getControl(name='form.actions.register').click()
+	>>> currentUser in reg.objectIds()
+	True
+
+Duplicate username:
+	>>> browser.open(reg.absolute_url())
+	>>> browser.getControl(name='form.username').value = currentUser
+	>>> browser.getControl(name='form.lockerid').value = '2001'
+	>>> browser.getControl(name='form.actions.register').click()
+	>>> "<dt>Error</dt>" in browser.contents
+	True
+	>>> "already a locker reserved" in browser.contents
+	True
+
+Duplicate id:
+	>>> browser.open(reg.absolute_url())
+	>>> browser.getControl(name='form.username').value = alternativeUser
+	>>> browser.getControl(name='form.lockerid').value = '2000'
+	>>> browser.getControl(name='form.actions.register').click()
+	>>> "<dt>Error</dt>" in browser.contents
+	True
+	>>> "is already reserved" in browser.contents
 	True
