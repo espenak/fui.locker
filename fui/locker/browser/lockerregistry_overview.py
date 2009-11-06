@@ -46,6 +46,11 @@ class LockerRegistryOverview(BrowserView):
 		r.sort(compare)
 		return r
 
+	def getUniqueMasterUsernames(self):
+		return set([x["username"] for x in self.getMasterReservations()])
+
+	def getUniqueBachelorUsernames(self):
+		return set([x["username"] for x in self.getBachelorReservations()])
 
 	def getMasterReservations(self):
 		context = aq_inner(self.context)

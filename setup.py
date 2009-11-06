@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.2.3'
+version = '1.3.0'
 
 setup(name='fui.locker',
 	version=version,

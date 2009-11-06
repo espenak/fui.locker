@@ -87,25 +87,25 @@
 
 			<h3>Bachelor</h3>
 			<p class="discreet">
-				<tal:block repeat="item view/getBachelorReservations">
-					<span tal:replace="item/username"/>,
+				<tal:block repeat="username view/getUniqueBachelorUsernames">
+					<span tal:replace="username"/>,
 				</tal:block>
 			</p>
 			<p class="discreet">
-				<tal:block repeat="item view/getBachelorReservations">
-					<span tal:replace="item/username"/>@ulrik.uio.no,
+				<tal:block repeat="username view/getUniqueBachelorUsernames">
+					<span tal:replace="username"/>@ulrik.uio.no,
 				</tal:block>
 			</p>
 
 			<h3>Master</h3>
 			<p class="discreet">
-				<tal:block repeat="item view/getMasterReservations">
-					<span tal:replace="item/username"/>,
+				<tal:block repeat="username view/getUniqueMasterUsernames">
+					<span tal:replace="username"/>,
 				</tal:block>
 			</p>
 			<p class="discreet">
-				<tal:block repeat="item view/getMasterReservations">
-					<span tal:replace="item/username"/>@ulrik.uio.no,
+				<tal:block repeat="username view/getUniqueMasterUsernames">
+					<span tal:replace="username"/>@ulrik.uio.no,
 				</tal:block>
 			</p>
 

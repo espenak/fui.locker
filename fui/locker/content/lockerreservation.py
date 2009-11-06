@@ -18,6 +18,10 @@ USERNAME_DESCRIPTION = u"Must be a valid UiO username."
 LOCKERID_TITLE = u"Locker id"
 LOCKERID_DESCRIPTION = u"The id/number of the locker."
 
+ALREADY_RESERVER_MSG = \
+u"""There is already a locker reserved by the '%s' user. If this is your
+username, and you have not reserved a locker this semester, or you wish to
+reserve more than one locker, contact FUI."""
 
 # Schema definition
 # http://api.plone.org/Archetypes/1.5.0/public/frames/products/Archetypes/index.html
@@ -107,10 +111,7 @@ def validate_unique_username(context, username, edit_id=None):
 	for id, item in context.objectItems():
 		if edit_id != id and item.Title() == username:
 			raise LockerValidationError(
-					u"There is already a locker reserved by the " \
-					"'%s' user. If this is your username, and you have " \
-					"not reserved a locker this semester, contact FUI." % \
-					username)
+					ALREADY_RESERVER_MSG % username)
 
 INVALID_USERNAME = u"Invalid UiO username"
 USERNAME_PATT = re.compile(u"^[a-z]+$")

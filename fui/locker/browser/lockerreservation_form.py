@@ -108,7 +108,9 @@ class LockerReservationForm(form.AddForm):
 							type='warning')
 					return self.template()
 
-			lockerreservation.validate_unique_username(context, username)
+			# Make sure anonymous users cannot add multiple lockers.
+			if context.portal_membership.isAnonymousUser():
+				lockerreservation.validate_unique_username(context, username)
 		except lockerreservation.LockerValidationError, e:
 			IStatusMessage(self.request).addStatusMessage(unicode(e),
 					type='error')
@@ -126,10 +128,11 @@ class LockerReservationForm(form.AddForm):
 
 		try:
 			# Create a new LockerReservation
+			id = "%s_%s" % (username, lockerid)
 			context.invokeFactory(
 					type_name = "LockerReservation",
-					id = username)
-			r = context[username]
+					id = id)
+			r = context[id]
 			r.setLockerid(lockerid)
 			r.setTitle(username)
 			r.setExcludeFromNav(True)
