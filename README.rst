@@ -43,4 +43,5 @@ For developers
 
 Release a new version to pypi.python.org with::
 
+    ~$ python setup.py register
     ~$ python setup.py egg_info -RDb "" sdist upload
